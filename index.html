@@ -9,7 +9,7 @@
         <button id="authorize-button" style="display: none;">Authorize</button>
         <button id="signout-button" style="display: none;">Sign Out</button>
 
-        <form>
+        <form onsubmit="updateData(); return false;">
             <input type="text" id="desc" />
             <input type="date" id="date" />
             <select id="account">
@@ -18,6 +18,7 @@
             </select>
             <input type="number" id="expense" />
             <input type="number" id="income" />
+            <button id="add-button" onclick="updateData();">Add Row</button>
         </form>
 
         <script type="text/javascript">
@@ -104,10 +105,13 @@ function updateData() {
     var epochDay = new Date(1899, 11, 31);
     var expenseDate = new Date(date.value);
     var oneDay = 24 * 60 * 60 * 1000;
+
     var days = Math.round(Math.abs(epochDay.getTime() - expenseDate.getTime())/oneDay);
     var description = desc.value;
-    var expense = expense.value;
-    var income = income.value;
+    var account = accountSelect.value;
+    var category = categorySelect.value;
+    var expenseAmt = expense.value;
+    var incomeAmt = income.value;
 
     var request = {
         // The ID of the spreadsheet to update.
@@ -133,10 +137,11 @@ function updateData() {
             values : [
                 [
                     days,
-                    "Test 1",
-                    "Cash",
-                    "Misc",
-                    501
+                    description,
+                    account,
+                    category,
+                    expenseAmt,
+                    incomeAmt
                 ]
             ]
         },
@@ -147,6 +152,13 @@ function updateData() {
             console.log(err);
             return;
         }
+
+        date.value = "";
+        desc.value = "";
+        accountSelect.value = "";
+        categorySelect.value = "";
+        expense.value = "";
+        income.value = "";
     });
 }
 
@@ -194,6 +206,5 @@ function wrapInOption(option) {
             onreadystatechange="if (this.readyState === 'complete') this.onload()">
         </script>
 
-        <button id="add-button" onclick="updateData();">Add Row</button>
     </body>
 </html>
