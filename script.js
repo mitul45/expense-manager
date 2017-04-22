@@ -1,31 +1,33 @@
-
 // Client ID and API key from the Developer Console
-var CLIENT_ID = '840179112792-bhg3k1h0dcnp9ltelj21o6vibphjcufe.apps.googleusercontent.com';
+var CLIENT_ID =
+  "840179112792-bhg3k1h0dcnp9ltelj21o6vibphjcufe.apps.googleusercontent.com";
 
 // Array of API discovery doc URLs for APIs used by the quickstart
-var DISCOVERY_DOCS = ["https://sheets.googleapis.com/$discovery/rest?version=v4"];
+var DISCOVERY_DOCS = [
+  "https://sheets.googleapis.com/$discovery/rest?version=v4"
+];
 
 // Authorization scopes required by the API; multiple scopes can be
 // included, separated by spaces.
 var SCOPES = "https://www.googleapis.com/auth/spreadsheets";
 
-var SPREADSHEET_ID = "1tAd4YjX8VgRkRG8-LXuYLhlUsyZgxLsRKqvbK74fetY"
+var SPREADSHEET_ID = "1tAd4YjX8VgRkRG8-LXuYLhlUsyZgxLsRKqvbK74fetY";
 
-var authorizeButton = document.getElementById('authorize-button');
-var signoutButton = document.getElementById('signout-button');
+var authorizeButton = document.getElementById("authorize-button");
+var signoutButton = document.getElementById("signout-button");
 
-var description = document.getElementById('description');
-var date = document.getElementById('date');
-var accountSelect = document.getElementById('account');
-var categorySelect = document.getElementById('category');
-var expense = document.getElementById('expense');
-var income = document.getElementById('income');
+var description = document.getElementById("description");
+var date = document.getElementById("date");
+var accountSelect = document.getElementById("account");
+var categorySelect = document.getElementById("category");
+var expense = document.getElementById("expense");
+var income = document.getElementById("income");
 
 /**
  *  On load, called to load the auth2 library and API client library.
  */
 function handleClientLoad() {
-  gapi.load('client:auth2', initClient);
+  gapi.load("client:auth2", initClient);
 }
 
 /**
@@ -33,19 +35,21 @@ function handleClientLoad() {
  *  listeners.
  */
 function initClient() {
-  gapi.client.init({
-    discoveryDocs: DISCOVERY_DOCS,
-    clientId: CLIENT_ID,
-    scope: SCOPES
-  }).then(function () {
-    // Listen for sign-in state changes.
-    gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus);
+  gapi.client
+    .init({
+      discoveryDocs: DISCOVERY_DOCS,
+      clientId: CLIENT_ID,
+      scope: SCOPES
+    })
+    .then(function() {
+      // Listen for sign-in state changes.
+      gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus);
 
-    // Handle the initial sign-in state.
-    updateSigninStatus(gapi.auth2.getAuthInstance().isSignedIn.get());
-    authorizeButton.onclick = handleAuthClick;
-    signoutButton.onclick = handleSignoutClick;
-  });
+      // Handle the initial sign-in state.
+      updateSigninStatus(gapi.auth2.getAuthInstance().isSignedIn.get());
+      authorizeButton.onclick = handleAuthClick;
+      signoutButton.onclick = handleSignoutClick;
+    });
 }
 
 /**
@@ -54,13 +58,13 @@ function initClient() {
  */
 function updateSigninStatus(isSignedIn) {
   if (isSignedIn) {
-    authorizeButton.style.display = 'none';
-    signoutButton.style.display = 'block';
+    authorizeButton.style.display = "none";
+    signoutButton.style.display = "block";
     getAccounts();
     getCategories();
   } else {
-    authorizeButton.style.display = 'block';
-    signoutButton.style.display = 'none';
+    authorizeButton.style.display = "block";
+    signoutButton.style.display = "none";
   }
 }
 
@@ -83,7 +87,9 @@ function updateData() {
   var expenseDate = new Date(date.value);
   var oneDay = 24 * 60 * 60 * 1000;
 
-  var days = Math.round(Math.abs(epochDay.getTime() - expenseDate.getTime())/oneDay);
+  var days = Math.round(
+    Math.abs(epochDay.getTime() - expenseDate.getTime()) / oneDay
+  );
   var description = desc.value;
   var account = accountSelect.value;
   var category = categorySelect.value;
@@ -96,7 +102,7 @@ function updateData() {
 
     // The A1 notation of a range to search for a logical table of data.
     // Values will be appended after the last row of the table.
-    range: 'Expenses!A1',
+    range: "Expenses!A1",
 
     includeValuesInResponse: true,
 
@@ -105,62 +111,59 @@ function updateData() {
     responseValueRenderOption: "FORMATTED_VALUE",
 
     // How the input data should be interpreted.
-    valueInputOption: 'USER_ENTERED',
+    valueInputOption: "USER_ENTERED",
 
     // How the input data should be inserted.
-    insertDataOption: 'INSERT_ROWS',
+    insertDataOption: "INSERT_ROWS",
 
     resource: {
-      values : [
-        [
-          days,
-          description,
-          account,
-          category,
-          expenseAmt,
-          incomeAmt
-        ]
-      ]
-    },
+      values: [[days, description, account, category, expenseAmt, incomeAmt]]
+    }
   };
 
-  gapi.client.sheets.spreadsheets.values.append(request).then(function(err, response) {
-    if (err) {
-      console.log(err);
-      return;
-    }
+  gapi.client.sheets.spreadsheets.values
+    .append(request)
+    .then(function(err, response) {
+      if (err) {
+        console.log(err);
+        return;
+      }
 
-    date.value = "";
-    desc.value = "";
-    accountSelect.value = "";
-    categorySelect.value = "";
-    expense.value = "";
-    income.value = "";
-  });
+      date.value = "";
+      desc.value = "";
+      accountSelect.value = "";
+      categorySelect.value = "";
+      expense.value = "";
+      income.value = "";
+    });
 }
 
 function getAccounts() {
-  gapi.client.sheets.spreadsheets.values.get(getRequestObj('Data!A3:A18')).then(function (response) {
-    var accounts = "";
-    var allValues = response.result.values[0];
-    allValues.forEach(function(value) {
-      accounts += wrapInOption(value);
-    })
+  gapi.client.sheets.spreadsheets.values
+    .get(getRequestObj("Data!A3:A18"))
+    .then(function(response) {
+      var accounts = "";
+      var allValues = response.result.values[0];
+      allValues.forEach(function(value) {
+        accounts += wrapInOption(value);
+      });
 
-    accountSelect.innerHTML = accounts;
-  })
+      accountSelect.innerHTML = accounts;
+    });
 }
 
 function getCategories() {
-  gapi.client.sheets.spreadsheets.values.get(getRequestObj('Data!E3:E18')).then(function (response) {
-    var categories = "";
-    var allValues = response.result.values[0];
-    allValues.forEach(function(value) {
-      categories += wrapInOption(value);
-    })
+  gapi.client.sheets.spreadsheets.values
+    .get(getRequestObj("Data!E3:E18"))
+    .then(function(response) {
+      var categories = "";
+      var allValues = response.result.values[0];
+      allValues.forEach(function(value) {
+        categories += wrapInOption(value);
+      });
 
-    categorySelect.innerHTML = categories;
-  })
+      categorySelect.innerHTML = categories;
+    });
 }
 
 function getRequestObj(range) {
@@ -170,9 +173,9 @@ function getRequestObj(range) {
     dateTimeRenderOption: "FORMATTED_STRING",
     majorDimension: "COLUMNS",
     valueRenderOption: "FORMATTED_VALUE"
-  }
+  };
 }
 
 function wrapInOption(option) {
-  return `<option value='${option}'>${option}</option>`
+  return `<option value='${option}'>${option}</option>`;
 }
