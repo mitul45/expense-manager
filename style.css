@@ -21,6 +21,8 @@ button {
   box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
   padding: 0.25em 0.5em;
   font-size: 1.12em;
+  background: transparent;
+  border: solid 1px royalblue;
 }
 
 #authorize-button {

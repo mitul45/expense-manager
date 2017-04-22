@@ -7,25 +7,24 @@
         <meta name="viewport" content="width=device-width" />
     </head>
     <body>
-        <div class="flex-container">
-            <button id="authorize-button" style="display: none;">Authorize</button>
+        <button id="authorize-button" style="display: none;">Authorize</button>
+        <button id="signout-button" style="display: none;">Sign Out</button>
 
+        <div class="flex-container">
             <form id="expense-form" style="display: none;">
-                <input type="text" id="desc" placeholder="description"/>
-                <input type="date" id="date" placeholder="date"/>
-                <select id="account">
+                <input type="text" id="desc" placeholder="description" required />
+                <input type="date" id="date" placeholder="date" required />
+                <select id="account" required>
                 </select>
-                <select id="category">
+                <select id="category" required>
                 </select>
-                <input type="number" id="amount" placeholder="amount"/>
+                <input type="number" id="amount" placeholder="amount" required/>
                 <div>
                     <input type="checkbox" id="is-income" />
                     <label for="is-income"> income? </label>
                 </div>
-                <button id="add-button" type="submit" onclick="addExpense();return false;">Add</button>
+                <button id="add-button" type="submit" onclick="addExpense(event)">Add</button>
             </form>
-
-            <button id="signout-button" style="display: none;">Sign Out</button>
         </div>
 
         <script type="text/javascript" src="script.js"></script>
