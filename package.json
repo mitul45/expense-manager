@@ -18,5 +18,8 @@
   "bugs": {
     "url": "https://github.com/mitul45/expense-manager/issues"
   },
-  "homepage": "https://github.com/mitul45/expense-manager#readme"
+  "homepage": "https://github.com/mitul45/expense-manager#readme",
+  "dependencies": {
+    "material-design-lite": "^1.3.0"
+  }
 }

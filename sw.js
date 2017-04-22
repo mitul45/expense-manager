@@ -2,11 +2,11 @@ var CACHE_NAME = "expense-manager-cache";
 var urlsToCache = [
   "/",
   "/style.css",
-  "https://fonts.googleapis.com/icon?family=Material+Icons",
-  "https://code.getmdl.io/1.3.0/material.indigo-pink.min.css",
+  "",
+  "/node_modules/material-design-lite/material.min.css",
   "/icons/favicon-32x32.png",
   "/icons/favicon-16x16.png",
-  "https://code.getmdl.io/1.3.0/material.min.js",
+  "/node_modules/material-design-lite/material.min.js",
   "/script.js"
 ];
 
