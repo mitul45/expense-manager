@@ -88,7 +88,13 @@ function handleSignoutClick(event) {
 /**
  * Add expense to the sheet
  */
-function addExpense() {
+function addExpense(event) {
+  if (!expenseForm.checkValidity()) {
+    return;
+  }
+
+  event.preventDefault();
+
   var epochDay = new Date(1899, 11, 31);
   var expenseDate = new Date(date.value);
   var oneDay = 24 * 60 * 60 * 1000;
