@@ -9,7 +9,7 @@
         <button id="authorize-button" style="display: none;">Authorize</button>
         <button id="signout-button" style="display: none;">Sign Out</button>
 
-        <form onsubmit="addExpense(); return false;">
+        <form id="expense-form" onsubmit="addExpense(); return false;" style="display: none;">
             <input type="text" id="desc" />
             <input type="date" id="date" />
             <select id="account">

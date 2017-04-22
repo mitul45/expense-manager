@@ -15,6 +15,7 @@ var SPREADSHEET_ID = "1tAd4YjX8VgRkRG8-LXuYLhlUsyZgxLsRKqvbK74fetY";
 
 var authorizeButton = document.getElementById("authorize-button");
 var signoutButton = document.getElementById("signout-button");
+var expenseForm = document.getElementById("expense-form");
 
 var description = document.getElementById("description");
 var date = document.getElementById("date");
@@ -60,11 +61,13 @@ function updateSigninStatus(isSignedIn) {
   if (isSignedIn) {
     authorizeButton.style.display = "none";
     signoutButton.style.display = "block";
+    expenseForm.style.display = "block";
     updateAccounts();
     updateCategories();
   } else {
     authorizeButton.style.display = "block";
     signoutButton.style.display = "none";
+    expenseForm.style.display = "none";
   }
 }
 
