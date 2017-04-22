@@ -1,5 +1,6 @@
-language: javascript
+language: node_js
 install: true
+script: true
 after_success:
   - test $TRAVIS_PULL_REQUEST == "false" && test $TRAVIS_BRANCH == "master" && bash deploy.sh
 env:
