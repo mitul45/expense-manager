@@ -1,0 +1,7 @@
+language: javascript
+install: true
+after_success:
+  - test $TRAVIS_PULL_REQUEST == "false" && test $TRAVIS_BRANCH == "master" && bash deploy.sh
+env:
+  global:
+    - secure: "rgaMiu+KbosqEIjD2RU1B/rCmIEsfS6LAoCvNbWzj6yB/6hw4gOZo+zkxvhdyI9tZN1+xZxxtkIJKcfObb+HlV6/2byAR6OEw+TDfatWei/re4oQoE1G1AX3YpgE+2SDPz4uV1/CFWwcfzU3+cQIXKz3kAQelzyyxJALzYuyLYkEAWrODfmSH+Nv7MvNF/j1L6RgSPm4f7gOG18SUYnV/Q16u1pkya2QDL1cvyewXCRlv9hpD3YWpmC+Is7QTuvgRafzRK8yoibRm3lbXGoMD4wFdAikaGNKUK3SKHg6hr14pBUmy26y42QDxcaVbyLSXYnEULld48qkXkvLPQqeKUxNHMEsO4FWzCOOy78/Au1h0c0etrWHYsqOVwTBgYMoD2rmDN6UKyZ5QZrs3aZa7jfKrdIytlsB5m8w3N6xUcqKWqz2cSvepTrtouk14gDa0l0z9QzUI0nIIFxMOA3p4v6iscVPm9cOBfoAObCeX1e4ZoV0/xDU4NWf1H0q32BSvUQXOEYVmk9CKvGQUImGTcPF0lj8RZ4yCz98Rsgu64DbJaJo5W8f8gmbZ8l2Sy+8IHcndzjZdXg3KNZVHFpUTPLVX188HW7YzzNgygK+QyTegDTf/n4NHxTJoSUcJy38t0u+hIt2su6JT/1hi15oPRSYozTs8SYmc9nhuAbVFNg="
