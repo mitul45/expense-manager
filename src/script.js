@@ -226,7 +226,7 @@ function wrapInOption(option) {
 // register for service worker
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", function() {
-    navigator.serviceWorker.register("/src/sw.js").then(
+    navigator.serviceWorker.register("src/sw.js").then(
       function(registration) {
         // Registration was successful
         console.log(
