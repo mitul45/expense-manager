@@ -3,23 +3,30 @@
     <head>
         <title>Add your expenses</title>
         <meta charset='utf-8' />
+        <link rel="stylesheet" type="text/css" href="style.css">
+        <meta name="viewport" content="width=device-width" />
     </head>
     <body>
-        <!--Add buttons to initiate auth sequence and sign out-->
-        <button id="authorize-button" style="display: none;">Authorize</button>
-        <button id="signout-button" style="display: none;">Sign Out</button>
+        <div class="flex-container">
+            <button id="authorize-button" style="display: none;">Authorize</button>
 
-        <form id="expense-form" onsubmit="addExpense(); return false;" style="display: none;">
-            <input type="text" id="desc" />
-            <input type="date" id="date" />
-            <select id="account">
-            </select>
-            <select id="category">
-            </select>
-            <input type="number" id="expense" />
-            <input type="number" id="income" />
-            <button id="add-button" onclick="addExpense();">Add</button>
-        </form>
+            <form id="expense-form" style="display: none;">
+                <input type="text" id="desc" placeholder="description"/>
+                <input type="date" id="date" placeholder="date"/>
+                <select id="account">
+                </select>
+                <select id="category">
+                </select>
+                <input type="number" id="amount" placeholder="amount"/>
+                <div>
+                    <input type="checkbox" id="is-income" />
+                    <label for="is-income"> income? </label>
+                </div>
+                <button id="add-button" type="submit" onclick="addExpense();return false;">Add</button>
+            </form>
+
+            <button id="signout-button" style="display: none;">Sign Out</button>
+        </div>
 
         <script type="text/javascript" src="script.js"></script>
 

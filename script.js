@@ -21,8 +21,8 @@ var description = document.getElementById("description");
 var date = document.getElementById("date");
 var accountSelect = document.getElementById("account");
 var categorySelect = document.getElementById("category");
-var expense = document.getElementById("expense");
-var income = document.getElementById("income");
+var amount = document.getElementById("amount");
+var income = document.getElementById("is-income");
 
 /**
  *  On load, called to load the auth2 library and API client library.
@@ -61,7 +61,7 @@ function updateSigninStatus(isSignedIn) {
   if (isSignedIn) {
     authorizeButton.style.display = "none";
     signoutButton.style.display = "block";
-    expenseForm.style.display = "block";
+    expenseForm.style.display = "flex";
     updateAccounts();
     updateCategories();
   } else {
@@ -99,8 +99,8 @@ function addExpense() {
   var description = desc.value;
   var account = accountSelect.value;
   var category = categorySelect.value;
-  var expenseAmt = expense.value;
-  var incomeAmt = income.value;
+  var amountVal = amount.value;
+  var isIncome = income.checked;
 
   var request = {
     // The ID of the spreadsheet to update.
@@ -123,15 +123,24 @@ function addExpense() {
     insertDataOption: "INSERT_ROWS",
 
     resource: {
-      values: [[days, description, account, category, expenseAmt, incomeAmt]]
+      values: [
+        [
+          days,
+          description,
+          account,
+          category,
+          isIncome ? 0 : amountVal,
+          isIncome ? amountVal : 0
+        ]
+      ]
     }
   };
 
   gapi.client.sheets.spreadsheets.values
     .append(request)
-    .then(function(err, response) {
-      if (err) {
-        console.log(err);
+    .then(function(response) {
+      if (response.status !== 200) {
+        console.log(response);
         return;
       }
 
@@ -140,8 +149,9 @@ function addExpense() {
       accountSelect.value = "";
       categorySelect.value = "";
       expense.value = "";
-      income.value = "";
+      income.value = false;
     });
+  return false;
 }
 
 /**
