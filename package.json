@@ -1,0 +1,22 @@
+{
+  "name": "expense-manager",
+  "version": "1.0.0",
+  "description": "An app to track your daily expenses",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mitul45/expense-manager.git"
+  },
+  "keywords": [
+    "expense-manager"
+  ],
+  "author": "mitul45",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mitul45/expense-manager/issues"
+  },
+  "homepage": "https://github.com/mitul45/expense-manager#readme"
+}
