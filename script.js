@@ -154,8 +154,8 @@ function addExpense(event) {
       desc.value = "";
       accountSelect.value = "";
       categorySelect.value = "";
-      expense.value = "";
-      income.value = false;
+      amount.value = "";
+      income.checked = false;
     });
   return false;
 }
