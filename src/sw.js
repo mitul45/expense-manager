@@ -1,13 +1,10 @@
 var CACHE_NAME = "expense-manager-cache";
 var urlsToCache = [
   "/",
-  "/style.css",
-  "",
-  "/node_modules/material-design-lite/material.min.css",
+  "/src/style.css",
   "/icons/favicon-32x32.png",
   "/icons/favicon-16x16.png",
-  "/node_modules/material-design-lite/material.min.js",
-  "/script.js"
+  "/src/script.js"
 ];
 
 // cache after the first install
