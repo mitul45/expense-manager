@@ -4,7 +4,9 @@ var urlsToCache = [
   "/src/style.css",
   "/icons/favicon-32x32.png",
   "/icons/favicon-16x16.png",
-  "/src/script.js"
+  "/src/script.js",
+  "/vendor/mdl/material.min.js",
+  "/vendor/mdl/material.min.css"
 ];
 
 // cache after the first install
