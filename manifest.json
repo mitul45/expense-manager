@@ -13,11 +13,15 @@
       "sizes": "96x96"
     },
     {
+      "src": "icons/android-icon-144x144.png",
+      "type": "image/png",
+      "sizes": "144x144"
+    },
+    {
       "src": "icons/android-icon-4x.png",
       "type": "image/png",
       "sizes": "192x192"
     }
   ],
-  "display": "standalone",
-  "start_url": "/expense-manager"
+  "display": "standalone"
 }
