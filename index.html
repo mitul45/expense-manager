@@ -9,7 +9,7 @@
         <button id="authorize-button" style="display: none;">Authorize</button>
         <button id="signout-button" style="display: none;">Sign Out</button>
 
-        <form onsubmit="updateData(); return false;">
+        <form onsubmit="addExpense(); return false;">
             <input type="text" id="desc" />
             <input type="date" id="date" />
             <select id="account">
@@ -18,7 +18,7 @@
             </select>
             <input type="number" id="expense" />
             <input type="number" id="income" />
-            <button id="add-button" onclick="updateData();">Add</button>
+            <button id="add-button" onclick="addExpense();">Add</button>
         </form>
 
         <script type="text/javascript" src="script.js"></script>

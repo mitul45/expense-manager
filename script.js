@@ -1,8 +1,7 @@
-// Client ID and API key from the Developer Console
 var CLIENT_ID =
   "840179112792-bhg3k1h0dcnp9ltelj21o6vibphjcufe.apps.googleusercontent.com";
 
-// Array of API discovery doc URLs for APIs used by the quickstart
+// Array of API discovery doc URLs for APIs used
 var DISCOVERY_DOCS = [
   "https://sheets.googleapis.com/$discovery/rest?version=v4"
 ];
@@ -11,6 +10,7 @@ var DISCOVERY_DOCS = [
 // included, separated by spaces.
 var SCOPES = "https://www.googleapis.com/auth/spreadsheets";
 
+// expense sheet id
 var SPREADSHEET_ID = "1tAd4YjX8VgRkRG8-LXuYLhlUsyZgxLsRKqvbK74fetY";
 
 var authorizeButton = document.getElementById("authorize-button");
@@ -60,8 +60,8 @@ function updateSigninStatus(isSignedIn) {
   if (isSignedIn) {
     authorizeButton.style.display = "none";
     signoutButton.style.display = "block";
-    getAccounts();
-    getCategories();
+    updateAccounts();
+    updateCategories();
   } else {
     authorizeButton.style.display = "block";
     signoutButton.style.display = "none";
@@ -82,7 +82,10 @@ function handleSignoutClick(event) {
   gapi.auth2.getAuthInstance().signOut();
 }
 
-function updateData() {
+/**
+ * Add expense to the sheet
+ */
+function addExpense() {
   var epochDay = new Date(1899, 11, 31);
   var expenseDate = new Date(date.value);
   var oneDay = 24 * 60 * 60 * 1000;
@@ -138,7 +141,10 @@ function updateData() {
     });
 }
 
-function getAccounts() {
+/**
+ * Fetch all accounts from sheet and update the select dropdown
+ */
+function updateAccounts() {
   gapi.client.sheets.spreadsheets.values
     .get(getRequestObj("Data!A3:A18"))
     .then(function(response) {
@@ -152,7 +158,10 @@ function getAccounts() {
     });
 }
 
-function getCategories() {
+/**
+ * Fetch expense categories from sheet and update the select dropdown
+ */
+function updateCategories() {
   gapi.client.sheets.spreadsheets.values
     .get(getRequestObj("Data!E3:E18"))
     .then(function(response) {
