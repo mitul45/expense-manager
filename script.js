@@ -23,6 +23,8 @@ var accountSelect = document.getElementById("account");
 var categorySelect = document.getElementById("category");
 var amount = document.getElementById("amount");
 var income = document.getElementById("is-income");
+var formLoader = document.getElementById("form-loader");
+var snackbarContainer = document.getElementById("toast-container");
 
 /**
  *  On load, called to load the auth2 library and API client library.
@@ -62,12 +64,14 @@ function updateSigninStatus(isSignedIn) {
     authorizeButton.style.display = "none";
     signoutButton.style.display = "block";
     expenseForm.style.display = "flex";
+    formLoader.style.display = "none";
     updateAccounts();
     updateCategories();
   } else {
     authorizeButton.style.display = "block";
     signoutButton.style.display = "none";
     expenseForm.style.display = "none";
+    formLoader.style.display = "none";
   }
 }
 
@@ -94,6 +98,8 @@ function addExpense(event) {
   }
 
   event.preventDefault();
+  formLoader.style.display = "block";
+  expenseForm.style.display = "none";
 
   var epochDay = new Date(1899, 11, 31);
   var expenseDate = new Date(date.value);
@@ -147,6 +153,9 @@ function addExpense(event) {
     .then(function(response) {
       if (response.status !== 200) {
         console.log(response);
+        snackbarContainer.MaterialSnackbar.showSnackbar({
+          message: "Sorry something went wrong!"
+        });
         return;
       }
 
@@ -156,6 +165,12 @@ function addExpense(event) {
       categorySelect.value = "";
       amount.value = "";
       income.checked = false;
+      formLoader.style.display = "none";
+      expenseForm.style.display = "flex";
+
+      snackbarContainer.MaterialSnackbar.showSnackbar({
+        message: "Expense added!"
+      });
     });
   return false;
 }

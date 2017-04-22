@@ -5,26 +5,61 @@
         <meta charset='utf-8' />
         <link rel="stylesheet" type="text/css" href="style.css">
         <meta name="viewport" content="width=device-width" />
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css">
+        <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
     </head>
     <body>
-        <button id="authorize-button" style="display: none;">Authorize</button>
-        <button id="signout-button" style="display: none;">Sign Out</button>
-
-        <div class="flex-container">
-            <form id="expense-form" style="display: none;">
-                <input type="text" id="desc" placeholder="description" required />
-                <input type="date" id="date" placeholder="date" required />
-                <select id="account" required>
-                </select>
-                <select id="category" required>
-                </select>
-                <input type="number" id="amount" placeholder="amount" required/>
-                <div>
-                    <input type="checkbox" id="is-income" />
-                    <label for="is-income"> income? </label>
+        <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+            <header class="mdl-layout__header">
+                <div class="mdl-layout__header-row">
+                    <!-- Title -->
+                    <span class="mdl-layout-title">Expense Manager</span>
+                    <div class="mdl-layout-spacer"></div>
+                    <nav class="mdl-navigation">
+                        <a class="mdl-navigation__link" id="signout-button" style="display: none;">Logout</a>
+                    </nav>
                 </div>
-                <button id="add-button" type="submit" onclick="addExpense(event)">Add</button>
-            </form>
+            </header>
+            <main class="mdl-layout__content">
+                <div class="page-content">
+                    <div class="flex-container">
+                        <button id="authorize-button" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" style="display: none;">Login</button>
+                        <div class="mdl-spinner mdl-js-spinner is-active" id="form-loader"></div>
+                        <form id="expense-form" style="display: none;">
+                            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                <input class="mdl-textfield__input" type="text" id="desc" required>
+                                <label class="mdl-textfield__label" for="desc">Description</label>
+                            </div>
+                            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                <input class="mdl-textfield__input" type="date" id="date" required>
+                            </div>
+                            <select id="account" class="mdl-textfield" required>
+                            </select>
+                            <br>
+                            <select id="category" class="mdl-textfield" required>
+                            </select>
+                            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                <input class="mdl-textfield__input" type="number" id="amount" required>
+                                <label class="mdl-textfield__label" for="amount">Amount</label>
+                            </div>
+                            <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="is-income">
+                                <input type="checkbox" id="is-income" class="mdl-switch__input">
+                                <span class="mdl-switch__label"> income? </span>
+                            </label>
+                            <br>
+                            <br>
+                            <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" id="add-button" type="submit" onclick="addExpense(event)">
+                                Save
+                            </button>
+                        </form>
+                    </div>
+                    <div id="toast-container" class="mdl-js-snackbar mdl-snackbar">
+                        <div class="mdl-snackbar__text"></div>
+                        <button class="mdl-snackbar__action" type="button"></button>
+                    </div>
+                </div>
+            </main>
         </div>
 
         <script type="text/javascript" src="script.js"></script>
