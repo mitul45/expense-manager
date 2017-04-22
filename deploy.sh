@@ -1,3 +1,5 @@
+# taken from https://github.com/steveklabnik/automatically_update_github_pages_with_travis_example
+
 #!/bin/bash
 
 set -o errexit -o nounset
