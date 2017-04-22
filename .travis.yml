@@ -1,3 +1,4 @@
+# taken from https://github.com/steveklabnik/automatically_update_github_pages_with_travis_example
 language: node_js
 install: true
 script: true

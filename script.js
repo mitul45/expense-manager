@@ -1,8 +1,7 @@
-// Client ID and API key from the Developer Console
 var CLIENT_ID =
   "840179112792-bhg3k1h0dcnp9ltelj21o6vibphjcufe.apps.googleusercontent.com";
 
-// Array of API discovery doc URLs for APIs used by the quickstart
+// Array of API discovery doc URLs for APIs used
 var DISCOVERY_DOCS = [
   "https://sheets.googleapis.com/$discovery/rest?version=v4"
 ];
@@ -11,17 +10,19 @@ var DISCOVERY_DOCS = [
 // included, separated by spaces.
 var SCOPES = "https://www.googleapis.com/auth/spreadsheets";
 
+// expense sheet id
 var SPREADSHEET_ID = "1tAd4YjX8VgRkRG8-LXuYLhlUsyZgxLsRKqvbK74fetY";
 
 var authorizeButton = document.getElementById("authorize-button");
 var signoutButton = document.getElementById("signout-button");
+var expenseForm = document.getElementById("expense-form");
 
 var description = document.getElementById("description");
 var date = document.getElementById("date");
 var accountSelect = document.getElementById("account");
 var categorySelect = document.getElementById("category");
-var expense = document.getElementById("expense");
-var income = document.getElementById("income");
+var amount = document.getElementById("amount");
+var income = document.getElementById("is-income");
 
 /**
  *  On load, called to load the auth2 library and API client library.
@@ -60,11 +61,13 @@ function updateSigninStatus(isSignedIn) {
   if (isSignedIn) {
     authorizeButton.style.display = "none";
     signoutButton.style.display = "block";
-    getAccounts();
-    getCategories();
+    expenseForm.style.display = "flex";
+    updateAccounts();
+    updateCategories();
   } else {
     authorizeButton.style.display = "block";
     signoutButton.style.display = "none";
+    expenseForm.style.display = "none";
   }
 }
 
@@ -82,7 +85,10 @@ function handleSignoutClick(event) {
   gapi.auth2.getAuthInstance().signOut();
 }
 
-function updateData() {
+/**
+ * Add expense to the sheet
+ */
+function addExpense() {
   var epochDay = new Date(1899, 11, 31);
   var expenseDate = new Date(date.value);
   var oneDay = 24 * 60 * 60 * 1000;
@@ -93,8 +99,8 @@ function updateData() {
   var description = desc.value;
   var account = accountSelect.value;
   var category = categorySelect.value;
-  var expenseAmt = expense.value;
-  var incomeAmt = income.value;
+  var amountVal = amount.value;
+  var isIncome = income.checked;
 
   var request = {
     // The ID of the spreadsheet to update.
@@ -117,15 +123,24 @@ function updateData() {
     insertDataOption: "INSERT_ROWS",
 
     resource: {
-      values: [[days, description, account, category, expenseAmt, incomeAmt]]
+      values: [
+        [
+          days,
+          description,
+          account,
+          category,
+          isIncome ? 0 : amountVal,
+          isIncome ? amountVal : 0
+        ]
+      ]
     }
   };
 
   gapi.client.sheets.spreadsheets.values
     .append(request)
-    .then(function(err, response) {
-      if (err) {
-        console.log(err);
+    .then(function(response) {
+      if (response.status !== 200) {
+        console.log(response);
         return;
       }
 
@@ -134,11 +149,15 @@ function updateData() {
       accountSelect.value = "";
       categorySelect.value = "";
       expense.value = "";
-      income.value = "";
+      income.value = false;
     });
+  return false;
 }
 
-function getAccounts() {
+/**
+ * Fetch all accounts from sheet and update the select dropdown
+ */
+function updateAccounts() {
   gapi.client.sheets.spreadsheets.values
     .get(getRequestObj("Data!A3:A18"))
     .then(function(response) {
@@ -152,7 +171,10 @@ function getAccounts() {
     });
 }
 
-function getCategories() {
+/**
+ * Fetch expense categories from sheet and update the select dropdown
+ */
+function updateCategories() {
   gapi.client.sheets.spreadsheets.values
     .get(getRequestObj("Data!E3:E18"))
     .then(function(response) {
