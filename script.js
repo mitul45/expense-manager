@@ -180,7 +180,7 @@ function addExpense(event) {
  */
 function updateAccounts() {
   gapi.client.sheets.spreadsheets.values
-    .get(getRequestObj("Data!A3:A18"))
+    .get(getRequestObj("Data!A5:A50"))
     .then(function(response) {
       var accounts = "";
       var allValues = response.result.values[0];
@@ -197,7 +197,7 @@ function updateAccounts() {
  */
 function updateCategories() {
   gapi.client.sheets.spreadsheets.values
-    .get(getRequestObj("Data!E3:E18"))
+    .get(getRequestObj("Data!E5:E50"))
     .then(function(response) {
       var categories = "";
       var allValues = response.result.values[0];
