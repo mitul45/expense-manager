@@ -1,32 +1,35 @@
-var CLIENT_ID =
-  "840179112792-bhg3k1h0dcnp9ltelj21o6vibphjcufe.apps.googleusercontent.com";
+// Constants
 
-// Array of API discovery doc URLs for APIs used
-var DISCOVERY_DOCS = [
+const CLIENT_ID =
+  "840179112792-bhg3k1h0dcnp9ltelj21o6vibphjcufe.apps.googleusercontent.com";
+const DISCOVERY_DOCS = [
   "https://sheets.googleapis.com/$discovery/rest?version=v4",
   "https://www.googleapis.com/discovery/v1/apis/drive/v3/rest"
 ];
 
-// Authorization scopes required by the API; multiple scopes can be
-// included, separated by spaces.
-var SCOPES =
+/**
+ * Need write access for spreadsheet to add expenses, Readonly access for drive to find sheet ID
+ */
+const SCOPES =
   "https://www.googleapis.com/auth/spreadsheets https://www.googleapis.com/auth/drive.metadata.readonly";
 
-// expense sheet id
-var SPREADSHEET_ID = "";
+const ACCOUNT_RANGE = "Data!A2:A50";
+const CATEGORY_RANGE = "Data!E2:E50";
 
-var authorizeButton = document.getElementById("authorize-button");
-var signoutButton = document.getElementById("signout-button");
-var expenseForm = document.getElementById("expense-form");
+// Cached DOM bindings
+const authorizeButton = document.getElementById("authorize-button");
+const signoutButton = document.getElementById("signout-button");
+const expenseForm = document.getElementById("expense-form");
+const description = document.getElementById("description");
+const date = document.getElementById("date");
+const accountSelect = document.getElementById("account");
+const categorySelect = document.getElementById("category");
+const amount = document.getElementById("amount");
+const income = document.getElementById("is-income");
+const formLoader = document.getElementById("form-loader");
+const snackbarContainer = document.getElementById("toast-container");
 
-var description = document.getElementById("description");
-var date = document.getElementById("date");
-var accountSelect = document.getElementById("account");
-var categorySelect = document.getElementById("category");
-var amount = document.getElementById("amount");
-var income = document.getElementById("is-income");
-var formLoader = document.getElementById("form-loader");
-var snackbarContainer = document.getElementById("toast-container");
+let spreadsheetId = "";
 
 /**
  *  On load, called to load the auth2 library and API client library.
@@ -46,7 +49,7 @@ function initClient() {
       clientId: CLIENT_ID,
       scope: SCOPES
     })
-    .then(function() {
+    .then(() => {
       // Listen for sign-in state changes.
       gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus);
 
@@ -59,13 +62,11 @@ function initClient() {
 
 /**
  *  Called when the signed in status changes, to update the UI
- *  appropriately. After a sign-in, the API is called.
+ *  appropriately. After a sign-in, find expense sheet id.
  */
 function updateSigninStatus(isSignedIn) {
   if (isSignedIn) {
-    authorizeButton.style.display = "none";
-    signoutButton.style.display = "block";
-    getSheetID();
+    onSignin();
   } else {
     authorizeButton.style.display = "block";
     signoutButton.style.display = "none";
@@ -74,33 +75,53 @@ function updateSigninStatus(isSignedIn) {
   }
 }
 
-function getSheetID() {
-  gapi.client.drive.files
-    .list({
-      q: "name='Expense Sheet' and mimeType='application/vnd.google-apps.spreadsheet'",
-      orderBy: "starred"
-    })
-    .then(function(response) {
-      if (response.result.files.length === 0) {
-        snackbarContainer.MaterialSnackbar.showSnackbar({
-          message: "Something went wrong!",
-          actionHandler: function() {
-            window.open(
-              "https://github.com/mitul45/expense-manager/blob/master/README.md",
-              "_blank"
-            );
-          },
-          actionText: "Details",
-          timeout: 5 * 60 * 1000
-        });
-        return;
-      }
-
-      SPREADSHEET_ID = response.result.files[0].id;
+/**
+ * On successful signin - Update authorization buttons, make a call to get sheetID
+ */
+function onSignin() {
+  authorizeButton.style.display = "none";
+  signoutButton.style.display = "block";
+  getSheetID("Expense Sheet").then(
+    sheetID => {
       expenseForm.style.display = "flex";
       formLoader.style.display = "none";
-      updateSelectFields();
-    });
+      spreadsheetId = sheetID;
+      updateCategoriesAndAccounts(sheetID);
+    },
+    () => {
+      snackbarContainer.MaterialSnackbar.showSnackbar({
+        message: "Can't find the sheet!",
+        actionHandler: () => {
+          window.open(
+            "https://github.com/mitul45/expense-manager/blob/master/README.md",
+            "_blank"
+          );
+        },
+        actionText: "Details",
+        timeout: 5 * 60 * 1000
+      });
+    }
+  );
+}
+
+/**
+ * Get sheet ID for a given sheet name
+ *
+ * @param {String} sheetName Sheet name to search in user's drive
+ * @returns {Promise} a promise resolves successfully with sheetID if it's available in user's drive
+ */
+function getSheetID(sheetName) {
+  return new Promise((resolve, reject) => {
+    gapi.client.drive.files
+      .list({
+        q: `name='${sheetName}' and mimeType='application/vnd.google-apps.spreadsheet'`,
+        orderBy: "starred"
+      })
+      .then(response => {
+        if (response.result.files.length === 0) reject();
+        else resolve(response.result.files[0].id);
+      });
+  });
 }
 
 /**
@@ -118,52 +139,33 @@ function handleSignoutClick(event) {
 }
 
 /**
- * Add expense to the sheet
+ * Apeend expense to the sheet
+ *
+ * @returns {boolean} return false to prevent browser refresh
  */
 function addExpense(event) {
-  if (!expenseForm.checkValidity()) {
-    return;
-  }
+  if (!expenseForm.checkValidity()) return false;
 
   event.preventDefault();
   formLoader.style.display = "block";
   expenseForm.style.display = "none";
 
-  var epochDay = new Date(1899, 11, 31);
-  var expenseDate = new Date(date.value);
-  var oneDay = 24 * 60 * 60 * 1000;
+  const epochDay = new Date(1899, 11, 31);
+  const expenseDate = new Date(date.value);
+  const oneDay = 24 * 60 * 60 * 1000;
 
-  var days = Math.round(
+  const days = Math.round(
     Math.abs(epochDay.getTime() - expenseDate.getTime()) / oneDay
   );
-  var description = desc.value;
-  var account = accountSelect.value;
-  var category = categorySelect.value;
-  var amountVal = amount.value;
-  var isIncome = income.checked;
+  const description = desc.value;
+  const account = accountSelect.value;
+  const category = categorySelect.value;
+  const amountVal = amount.value;
+  const isIncome = income.checked;
 
-  var request = {
-    // The ID of the spreadsheet to update.
-    spreadsheetId: SPREADSHEET_ID,
-
-    // The A1 notation of a range to search for a logical table of data.
-    // Values will be appended after the last row of the table.
-    range: "Expenses!A1",
-
-    includeValuesInResponse: true,
-
-    responseDateTimeRenderOption: "FORMATTED_STRING",
-
-    responseValueRenderOption: "FORMATTED_VALUE",
-
-    // How the input data should be interpreted.
-    valueInputOption: "USER_ENTERED",
-
-    // How the input data should be inserted.
-    insertDataOption: "INSERT_ROWS",
-
-    resource: {
-      values: [
+  gapi.client.sheets.spreadsheets.values
+    .append(
+      appendRequestObj(spreadsheetId, [
         [
           days,
           description,
@@ -172,13 +174,9 @@ function addExpense(event) {
           isIncome ? 0 : amountVal,
           isIncome ? amountVal : 0
         ]
-      ]
-    }
-  };
-
-  gapi.client.sheets.spreadsheets.values
-    .append(request)
-    .then(function(response) {
+      ])
+    )
+    .then(response => {
       if (response.status !== 200) {
         console.log(response);
         snackbarContainer.MaterialSnackbar.showSnackbar({
@@ -204,31 +202,68 @@ function addExpense(event) {
 }
 
 /**
- * Fetch all accounts from sheet and update the select dropdown
+ * Generate append request object
+ * Docs: https://developers.google.com/sheets/api/reference/rest/v4/spreadsheets.values/append
+ *
+ * @param {String} spreadsheetId Expense sheet ID
+ * @param {Array} values values to be appended
+ * @returns {Object} request object for append
  */
-function updateSelectFields() {
-  gapi.client.sheets.spreadsheets.values
-    .batchGet(getRequestObj(["Data!A2:A50", "Data!E2:E50"]))
-    .then(function(response) {
-      var accounts = "";
-      var categories = "";
-      var allAccounts = response.result.valueRanges[0].values[0];
-      var allCategories = response.result.valueRanges[1].values[0];
-      allAccounts.forEach(function(value) {
-        accounts += wrapInOption(value);
-      });
-      allCategories.forEach(function(value) {
-        categories += wrapInOption(value);
-      });
+function appendRequestObj(spreadsheetId, values) {
+  return {
+    // The ID of the spreadsheet to update.
+    spreadsheetId,
 
-      accountSelect.innerHTML = accounts;
-      categorySelect.innerHTML = categories;
+    // The A1 notation of a range to search for a logical table of data.
+    // Values will be appended after the last row of the table.
+    range: "Expenses!A1",
+
+    includeValuesInResponse: true,
+
+    responseDateTimeRenderOption: "FORMATTED_STRING",
+
+    responseValueRenderOption: "FORMATTED_VALUE",
+
+    // How the input data should be interpreted.
+    valueInputOption: "USER_ENTERED",
+
+    // How the input data should be inserted.
+    insertDataOption: "INSERT_ROWS",
+
+    resource: {
+      values
+    }
+  };
+}
+
+/**
+ * Fetch all accounts, and categories info from spreadsheet + update them in HTML
+ *
+ * @param {String} sheetID Expense sheetID
+ */
+function updateCategoriesAndAccounts(sheetID) {
+  gapi.client.sheets.spreadsheets.values
+    .batchGet(batchGetRequestObj(sheetID, [ACCOUNT_RANGE, CATEGORY_RANGE]))
+    .then(response => {
+      const allAccounts = response.result.valueRanges[0].values[0];
+      const allCategories = response.result.valueRanges[1].values[0];
+      accountSelect.innerHTML = allAccounts.map(wrapInOption).join();
+      categorySelect.innerHTML = allCategories.map(wrapInOption).join();
     });
 }
 
-function getRequestObj(ranges) {
+/**
+ * Generate batchGet request object for given sheet, and range. 
+ * Docs: https://developers.google.com/sheets/api/reference/rest/v4/spreadsheets.values/batchGet
+ *
+ *
+ * @param {String} sheetID Expense sheet ID
+ * @param {Array} ranges List of ranges in A1 notation
+ * @returns {Object} request object for batchGet
+ */
+function batchGetRequestObj(sheetID, ranges) {
   return {
-    spreadsheetId: SPREADSHEET_ID,
+    spreadsheetId: sheetID,
     ranges: ranges,
     dateTimeRenderOption: "FORMATTED_STRING",
     majorDimension: "COLUMNS",
@@ -242,16 +277,16 @@ function wrapInOption(option) {
 
 // register for service worker
 if ("serviceWorker" in navigator) {
-  window.addEventListener("load", function() {
+  window.addEventListener("load", () => {
     navigator.serviceWorker.register("sw.js").then(
-      function(registration) {
+      registration => {
         // Registration was successful
         console.log(
           "ServiceWorker registration successful with scope: ",
           registration.scope
         );
       },
-      function(err) {
+      err => {
         // registration failed :(
         console.log("ServiceWorker registration failed: ", err);
       }
