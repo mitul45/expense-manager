@@ -3,15 +3,17 @@ var CLIENT_ID =
 
 // Array of API discovery doc URLs for APIs used
 var DISCOVERY_DOCS = [
-  "https://sheets.googleapis.com/$discovery/rest?version=v4"
+  "https://sheets.googleapis.com/$discovery/rest?version=v4",
+  "https://www.googleapis.com/discovery/v1/apis/drive/v3/rest"
 ];
 
 // Authorization scopes required by the API; multiple scopes can be
 // included, separated by spaces.
-var SCOPES = "https://www.googleapis.com/auth/spreadsheets";
+var SCOPES =
+  "https://www.googleapis.com/auth/spreadsheets https://www.googleapis.com/auth/drive.metadata.readonly";
 
 // expense sheet id
-var SPREADSHEET_ID = "1tAd4YjX8VgRkRG8-LXuYLhlUsyZgxLsRKqvbK74fetY";
+var SPREADSHEET_ID = "";
 
 var authorizeButton = document.getElementById("authorize-button");
 var signoutButton = document.getElementById("signout-button");
@@ -63,16 +65,42 @@ function updateSigninStatus(isSignedIn) {
   if (isSignedIn) {
     authorizeButton.style.display = "none";
     signoutButton.style.display = "block";
-    expenseForm.style.display = "flex";
-    formLoader.style.display = "none";
-    updateAccounts();
-    updateCategories();
+    getSheetID();
   } else {
     authorizeButton.style.display = "block";
     signoutButton.style.display = "none";
     expenseForm.style.display = "none";
     formLoader.style.display = "none";
   }
+}
+
+function getSheetID() {
+  gapi.client.drive.files
+    .list({
+      q: "name='Expense Sheet' and mimeType='application/vnd.google-apps.spreadsheet'",
+      orderBy: "starred"
+    })
+    .then(function(response) {
+      if (response.result.files.length === 0) {
+        snackbarContainer.MaterialSnackbar.showSnackbar({
+          message: "Something went wrong!",
+          actionHandler: function() {
+            window.open(
+              "https://github.com/mitul45/expense-manager/blob/master/README.md",
+              "_blank"
+            );
+          },
+          actionText: "Details",
+          timeout: 5 * 60 * 1000
+        });
+        return;
+      }
+
+      SPREADSHEET_ID = response.result.files[0].id;
+      expenseForm.style.display = "flex";
+      formLoader.style.display = "none";
+      updateSelectFields();
+    });
 }
 
 /**
@@ -178,41 +206,30 @@ function addExpense(event) {
 /**
  * Fetch all accounts from sheet and update the select dropdown
  */
-function updateAccounts() {
+function updateSelectFields() {
   gapi.client.sheets.spreadsheets.values
-    .get(getRequestObj("Data!A2:A50"))
+    .batchGet(getRequestObj(["Data!A2:A50", "Data!E2:E50"]))
     .then(function(response) {
       var accounts = "";
-      var allValues = response.result.values[0];
-      allValues.forEach(function(value) {
+      var categories = "";
+      var allAccounts = response.result.valueRanges[0].values[0];
+      var allCategories = response.result.valueRanges[1].values[0];
+      allAccounts.forEach(function(value) {
         accounts += wrapInOption(value);
       });
-
-      accountSelect.innerHTML = accounts;
-    });
-}
-
-/**
- * Fetch expense categories from sheet and update the select dropdown
- */
-function updateCategories() {
-  gapi.client.sheets.spreadsheets.values
-    .get(getRequestObj("Data!E2:E50"))
-    .then(function(response) {
-      var categories = "";
-      var allValues = response.result.values[0];
-      allValues.forEach(function(value) {
+      allCategories.forEach(function(value) {
         categories += wrapInOption(value);
       });
 
+      accountSelect.innerHTML = accounts;
       categorySelect.innerHTML = categories;
     });
 }
 
-function getRequestObj(range) {
+function getRequestObj(ranges) {
   return {
     spreadsheetId: SPREADSHEET_ID,
-    range: range,
+    ranges: ranges,
     dateTimeRenderOption: "FORMATTED_STRING",
     majorDimension: "COLUMNS",
     valueRenderOption: "FORMATTED_VALUE"
