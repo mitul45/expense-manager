@@ -81,6 +81,7 @@ function updateSigninStatus(isSignedIn) {
 function onSignin() {
   authorizeButton.style.display = "none";
   signoutButton.style.display = "block";
+  initFields();
   getSheetID("Expense Sheet").then(
     sheetID => {
       expenseForm.style.display = "flex";
@@ -292,4 +293,13 @@ if ("serviceWorker" in navigator) {
       }
     );
   });
+}
+
+// Check the validity state and update field accordingly.
+// In mdl required input fields are invalid on page load which looks bad.
+// Fix: https://github.com/google/material-design-lite/issues/1502#issuecomment-257405822
+function initFields() {
+  document
+    .querySelectorAll("*[data-required]")
+    .forEach(e => (e.required = true));
 }
