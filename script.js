@@ -81,6 +81,7 @@ function updateSigninStatus(isSignedIn) {
 function onSignin() {
   authorizeButton.style.display = "none";
   signoutButton.style.display = "block";
+  initFields();
   getSheetID("Expense Sheet").then(
     sheetID => {
       expenseForm.style.display = "flex";
@@ -150,13 +151,13 @@ function addExpense(event) {
   formLoader.style.display = "block";
   expenseForm.style.display = "none";
 
-  const epochDay = new Date(1899, 11, 31);
-  const expenseDate = new Date(date.value);
-  const oneDay = 24 * 60 * 60 * 1000;
+  const expenseDate = date.value;
+  const dateObj = {
+    yyyy: expenseDate.substr(0, 4),
+    mm: expenseDate.substr(5, 2),
+    dd: expenseDate.substr(-2)
+  };
 
-  const days = Math.round(
-    Math.abs(epochDay.getTime() - expenseDate.getTime()) / oneDay
-  );
   const description = desc.value;
   const account = accountSelect.value;
   const category = categorySelect.value;
@@ -167,7 +168,7 @@ function addExpense(event) {
     .append(
       appendRequestObj(spreadsheetId, [
         [
-          days,
+          `=DATE(${dateObj.yyyy}, ${dateObj.mm}, ${dateObj.dd})`,
           description,
           account,
           category,
@@ -292,4 +293,13 @@ if ("serviceWorker" in navigator) {
       }
     );
   });
+}
+
+// Check the validity state and update field accordingly.
+// In mdl required input fields are invalid on page load which looks bad.
+// Fix: https://github.com/google/material-design-lite/issues/1502#issuecomment-257405822
+function initFields() {
+  document
+    .querySelectorAll("*[data-required]")
+    .forEach(e => (e.required = true));
 }
