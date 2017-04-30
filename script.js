@@ -150,13 +150,13 @@ function addExpense(event) {
   formLoader.style.display = "block";
   expenseForm.style.display = "none";
 
-  const epochDay = new Date(1899, 11, 31);
-  const expenseDate = new Date(date.value);
-  const oneDay = 24 * 60 * 60 * 1000;
+  const expenseDate = date.value;
+  const dateObj = {
+    yyyy: expenseDate.substr(0, 4),
+    mm: expenseDate.substr(5, 2),
+    dd: expenseDate.substr(-2)
+  };
 
-  const days = Math.round(
-    Math.abs(epochDay.getTime() - expenseDate.getTime()) / oneDay
-  );
   const description = desc.value;
   const account = accountSelect.value;
   const category = categorySelect.value;
@@ -167,7 +167,7 @@ function addExpense(event) {
     .append(
       appendRequestObj(spreadsheetId, [
         [
-          days,
+          `=DATE(${dateObj.yyyy}, ${dateObj.mm}, ${dateObj.dd})`,
           description,
           account,
           category,
