@@ -91,7 +91,7 @@ function onSignin() {
     },
     () => {
       snackbarContainer.MaterialSnackbar.showSnackbar({
-        message: "Can't find the sheet!",
+        message: "Cannot find the sheet!",
         actionHandler: () => {
           window.open(
             "https://github.com/mitul45/expense-manager/blob/master/README.md",
@@ -140,7 +140,7 @@ function handleSignoutClick(event) {
 }
 
 /**
- * Apeend expense to the sheet
+ * Apeend expense to the expense sheet
  *
  * @returns {boolean} return false to prevent browser refresh
  */
@@ -186,6 +186,7 @@ function addExpense(event) {
         return;
       }
 
+      // reset fileds
       date.value = "";
       desc.value = "";
       accountSelect.value = "";
@@ -203,7 +204,7 @@ function addExpense(event) {
 }
 
 /**
- * Generate append request object
+ * Generate append request object - for given sheet and values to append
  * Docs: https://developers.google.com/sheets/api/reference/rest/v4/spreadsheets.values/append
  *
  * @param {String} spreadsheetId Expense sheet ID
@@ -254,18 +255,17 @@ function updateCategoriesAndAccounts(sheetID) {
 }
 
 /**
- * Generate batchGet request object for given sheet, and range. 
+ * Generate batchGet request object - for given sheet, and range.
  * Docs: https://developers.google.com/sheets/api/reference/rest/v4/spreadsheets.values/batchGet
- *
  *
  * @param {String} sheetID Expense sheet ID
  * @param {Array} ranges List of ranges in A1 notation
  * @returns {Object} request object for batchGet
  */
-function batchGetRequestObj(sheetID, ranges) {
+function batchGetRequestObj(spreadsheetId, ranges) {
   return {
-    spreadsheetId: sheetID,
-    ranges: ranges,
+    spreadsheetId,
+    ranges,
     dateTimeRenderOption: "FORMATTED_STRING",
     majorDimension: "COLUMNS",
     valueRenderOption: "FORMATTED_VALUE"
@@ -295,8 +295,7 @@ if ("serviceWorker" in navigator) {
   });
 }
 
-// Check the validity state and update field accordingly.
-// In mdl required input fields are invalid on page load which looks bad.
+// In MDL - `required` input fields are invalid on page load by default (which looks bad).
 // Fix: https://github.com/google/material-design-lite/issues/1502#issuecomment-257405822
 function initFields() {
   document
