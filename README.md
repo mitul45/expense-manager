@@ -3,7 +3,7 @@ Introducing Expense Manager, an app to track your daily spendings. It is made of
 1. [Main application](https://mitul45.github.io/expense-manager/): Used to add expenses to the sheet
 2. [Expense Sheet](https://docs.google.com/spreadsheets/d/1NfF1A0UC6qLuOE7eiTsAzNVAskNcYeuPHAkzSURH0Pc/edit#gid=0): This is where you can do all kinds of analysis/summarization of your expenses.
 
-Why? Because Sheets is really good with numbers, but entering data from the mobile app is [not very convenient](http://i.imgur.com/NfaGKEI.gifv). The idea is to make adding expense [as simple as it can be](http://i.imgur.com/tg6UzFe.gifv). You should add them at the same moment you make a transaction. Make it like a habit.
+Why? Because Google Sheets is really good with numbers, but entering data from the mobile app is [not very convenient](http://i.imgur.com/NfaGKEI.gifv). The idea is to make adding expense [as simple as it can be](http://i.imgur.com/tg6UzFe.gifv). You should add them at the same moment you make a transaction. Make it like a habit.
 
 Detailed analysis of the sheet can be deferred till you get an access to a computer. You can plot fancy charts at end of the month, set the budget for next week, etc. And I feel all of that need not necessarily be done on small screen.
 
