@@ -2,7 +2,7 @@
 
 _"If you can't measure it, you can't improve it."_ - [Peter Drucker](https://en.wikipedia.org/wiki/Peter_Drucker)  
 
-Introducing Expense Manager, an app to track your daily spendings. It is made of two main components:
+Take control back. Introducing Expense Manager, an app to track your daily spendings. It is made of two main components:
 1. [Main application](https://mitul45.github.io/expense-manager/): Used to add expenses to the sheet
 2. [Expense Sheet](https://docs.google.com/spreadsheets/d/1NfF1A0UC6qLuOE7eiTsAzNVAskNcYeuPHAkzSURH0Pc/edit#gid=0): This is where you can do all kinds of analysis/summarization of your expenses.
 
@@ -15,10 +15,10 @@ Detailed analysis of the sheet can be deferred till you get an access to a compu
 - Uses [Google Sheet](https://docs.google.com/spreadsheets/d/1NfF1A0UC6qLuOE7eiTsAzNVAskNcYeuPHAkzSURH0Pc/edit?usp=sharing) as a database to store expenses. **Why?**  
     1. Privacy. It's your personal data. It should belong to you.  
     1. Sheets is [way better](https://www.google.co.in/search?q=cool+things+you+can+do+with+excel&oq=cool+things+your+can+do+with+ex&aqs=chrome.1.69i57j0l5.10138j0j4&sourceid=chrome&ie=UTF-8#q=cool+things+you+can+do+with+google+sheets) at handling numbers than me. You can do all kinds of analysis using graphs, formulas, etc.  
-    1. I didn't want to write backend 🤓  
+    1. I didn't want to write backend :nerd_face:
 - [`Progressive Web App`](https://developers.google.com/web/progressive-web-apps/) - Quick to load, can be installed as a standalone app on phone.  
 - Easier sharing. Sharing expenses with someone (wife, family)? [Share](https://support.google.com/docs/answer/2494822?co=GENIE.Platform%3DDesktop&hl=en) the expense sheet and all of your combined data belongs to the single sheet.  
-- Backup. Didn't I tell you it uses Google Sheets to store expenses? Your data is always backed up on 🌥  
+- Backup. Didn't I tell you it uses Google Sheets to store expenses? Your data is always backed up on :partly_sunny:
 - [Mobile friendly](http://i.imgur.com/vqz7zDA.png) layout.  
 
 ## How to get started
