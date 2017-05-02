@@ -1,4 +1,7 @@
 # 💸 expense-manager [![Build Status](https://travis-ci.org/mitul45/expense-manager.svg?branch=master)](https://travis-ci.org/mitul45/expense-manager)
+
+_"If you can't measure it, you can't improve it."_ - [Peter Drucker](https://en.wikipedia.org/wiki/Peter_Drucker)  
+
 Introducing Expense Manager, an app to track your daily spendings. It is made of two main components:
 1. [Main application](https://mitul45.github.io/expense-manager/): Used to add expenses to the sheet
 2. [Expense Sheet](https://docs.google.com/spreadsheets/d/1NfF1A0UC6qLuOE7eiTsAzNVAskNcYeuPHAkzSURH0Pc/edit#gid=0): This is where you can do all kinds of analysis/summarization of your expenses.
@@ -24,6 +27,10 @@ Detailed analysis of the sheet can be deferred till you get an access to a compu
 1. Don't rename it. It should be named `Expense Sheet`.
 1. Update categories, account names, initial values in [Data sheet](https://docs.google.com/spreadsheets/d/1NfF1A0UC6qLuOE7eiTsAzNVAskNcYeuPHAkzSURH0Pc/edit#gid=1956004401). Clear our sample expenses in the first sheet.
 1. That's it! You can start adding expenses now.
+
+### Permissions
+- Read access to Google Drive to find `Expense Sheet`.
+- Read and write access to Google Sheets to add expenses.
 
 ## Check it out
 https://mitul45.github.io/expense-manager/
