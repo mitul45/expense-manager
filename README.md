@@ -33,4 +33,4 @@ Detailed analysis of the sheet can be deferred till you get an access to a compu
 - Read and write access to Google Sheets to add expenses.
 
 ## Check it out
-https://mitul45.github.io/expense-manager/
+https://mitul45.github.io/expense-manager/ :rocket:
