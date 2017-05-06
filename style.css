@@ -20,3 +20,10 @@ body {
   margin: auto;
   font-size: 1.5em;
 }
+
+.footer {
+  padding: 10px;
+  background: black;
+  color: white;
+  font-weight: 300 !important;
+}
