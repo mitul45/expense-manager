@@ -177,29 +177,43 @@ function addExpense(event) {
         ]
       ])
     )
-    .then(response => {
-      if (response.status !== 200) {
+    .then(
+      response => {
+        // reset fileds
+        date.value = "";
+        desc.value = "";
+        accountSelect.value = "";
+        categorySelect.value = "";
+        amount.value = "";
+        income.checked = false;
+        formLoader.style.display = "none";
+        expenseForm.style.display = "flex";
+
+        snackbarContainer.MaterialSnackbar.showSnackbar({
+          message: "Expense added!"
+        });
+      },
+      response => {
+        let message = "Sorry, something went wrong";
+        if (response.status == 403) {
+          message = "Please copy the sheet in your drive";
+        }
         console.log(response);
         snackbarContainer.MaterialSnackbar.showSnackbar({
-          message: "Sorry something went wrong!"
+          message,
+          actionHandler: () => {
+            window.open(
+              "https://github.com/mitul45/expense-manager/blob/master/README.md#how-to-get-started",
+              "_blank"
+            );
+          },
+          actionText: "Details",
+          timeout: 5 * 60 * 1000
         });
-        return;
+        formLoader.style.display = "none";
+        expenseForm.style.display = "flex";
       }
-
-      // reset fileds
-      date.value = "";
-      desc.value = "";
-      accountSelect.value = "";
-      categorySelect.value = "";
-      amount.value = "";
-      income.checked = false;
-      formLoader.style.display = "none";
-      expenseForm.style.display = "flex";
-
-      snackbarContainer.MaterialSnackbar.showSnackbar({
-        message: "Expense added!"
-      });
-    });
+    );
   return false;
 }
 
