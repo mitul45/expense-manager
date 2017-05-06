@@ -94,7 +94,7 @@ function onSignin() {
         message: "Cannot find the sheet!",
         actionHandler: () => {
           window.open(
-            "https://github.com/mitul45/expense-manager/blob/master/README.md",
+            "https://github.com/mitul45/expense-manager/blob/master/README.md#how-to-get-started",
             "_blank"
           );
         },
