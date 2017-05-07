@@ -315,4 +315,7 @@ function initFields() {
   document
     .querySelectorAll("*[data-required]")
     .forEach(e => (e.required = true));
+
+  // set date picker's defalt value as today
+  date.value = new Date().toISOString().substr(0, 10);
 }
