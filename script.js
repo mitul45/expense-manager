@@ -20,7 +20,6 @@ const CATEGORY_RANGE = "Data!E2:E50";
 const authorizeButton = document.getElementById("authorize-button");
 const signoutButton = document.getElementById("signout-button");
 const expenseForm = document.getElementById("expense-form");
-const description = document.getElementById("description");
 const date = document.getElementById("date");
 const accountSelect = document.getElementById("account");
 const categorySelect = document.getElementById("category");
