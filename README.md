@@ -22,9 +22,10 @@ Detailed analysis of the sheet can be deferred till you get an access to a compu
 - [Mobile friendly](http://i.imgur.com/vqz7zDA.png) layout.  
 
 ## How to get started
-1. Add this [sheet](https://docs.google.com/spreadsheets/d/1NfF1A0UC6qLuOE7eiTsAzNVAskNcYeuPHAkzSURH0Pc/edit?usp=sharing) to your Google Drive. After signing you should be able to see this button on top left corner - `Add to My Drive`.  
- ![Add to My Drive](http://i.imgur.com/lCFtipn.png)
-1. Don't rename it. It should be named `Expense Sheet`.
+1. Add this [sheet](https://docs.google.com/spreadsheets/d/1NfF1A0UC6qLuOE7eiTsAzNVAskNcYeuPHAkzSURH0Pc/edit?usp=sharing) to your Google Drive. After signing, choose `File -> Make a Copy...`.  
+ ![Make a Copy](http://i.imgur.com/qpLUsmY.png)
+1. Don't rename it. It should be named `Expense Sheet`.  
+ ![Expense Sheet](http://i.imgur.com/ncOBzsa.png)
 1. Update categories, account names, initial values in [Data sheet](https://docs.google.com/spreadsheets/d/1NfF1A0UC6qLuOE7eiTsAzNVAskNcYeuPHAkzSURH0Pc/edit#gid=1956004401). Clear our sample expenses in the first sheet.
 1. That's it! You can start adding expenses now.
 
