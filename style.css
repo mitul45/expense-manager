@@ -12,11 +12,12 @@ body {
 }
 
 #expense-form {
-  display: flex;
+  display: none;
   flex-direction: column;
 }
 
 #authorize-button {
+  display: none;
   margin: auto;
   font-size: 1.5em;
 }
@@ -26,4 +27,8 @@ body {
   background: black;
   color: white;
   font-weight: 300 !important;
+}
+
+#signout-button {
+  display: none;
 }
