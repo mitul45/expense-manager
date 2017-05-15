@@ -1,5 +1,4 @@
 // Constants
-
 const CLIENT_ID =
   "840179112792-bhg3k1h0dcnp9ltelj21o6vibphjcufe.apps.googleusercontent.com";
 const DISCOVERY_DOCS = [

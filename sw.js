@@ -1,9 +1,9 @@
 var CACHE_NAME = "expense-manager-cache";
 var urlsToCache = [
-  // "style.css",
+  "style.css",
   "icons/favicon-32x32.png",
   "icons/favicon-16x16.png",
-  // "script.js",
+  "script.js",
   "vendor/mdl/material.min.js",
   "vendor/mdl/material.min.css"
 ];
@@ -21,13 +21,21 @@ self.addEventListener("install", function(event) {
 
 // listen for fetch events
 self.addEventListener("fetch", function(event) {
+  const requestURL = new URL(event.request.url);
   event.respondWith(
-    caches.match(event.request).then(function(response) {
-      // Cache hit - return response
-      if (response) {
-        return response;
-      }
-      return fetch(event.request);
+    caches.open(CACHE_NAME).then(function(cache) {
+      return caches.match(event.request).then(function(response) {
+        var fetchPromise = fetch(event.request).then(function(networkResponse) {
+          // cache same host files only
+          if (
+            requestURL.pathname === "mitul45.github.io" ||
+            requestURL.hostname === "localhost"
+          )
+            cache.put(event.request, networkResponse.clone());
+          return networkResponse;
+        });
+        return response || fetchPromise;
+      });
     })
   );
 });
