@@ -20,12 +20,12 @@ const CATEGORY_RANGE = "Data!E2:E50";
 const authorizeButton = document.getElementById("authorize-button");
 const signoutButton = document.getElementById("signout-button");
 const expenseForm = document.getElementById("expense-form");
-const description = document.getElementById("description");
-const date = document.getElementById("date");
-const accountSelect = document.getElementById("account");
-const categorySelect = document.getElementById("category");
-const amount = document.getElementById("amount");
-const income = document.getElementById("is-income");
+const descriptionEl = document.getElementById("description");
+const dateEl = document.getElementById("date");
+const accountEl = document.getElementById("account");
+const categoryEl = document.getElementById("category");
+const amountEl = document.getElementById("amount");
+const isIncomeEl = document.getElementById("is-income");
 const formLoader = document.getElementById("form-loader");
 const snackbarContainer = document.getElementById("toast-container");
 
@@ -140,7 +140,7 @@ function handleSignoutClick(event) {
 }
 
 /**
- * Apeend expense to the expense sheet
+ * Append expense to the expense sheet
  *
  * @returns {boolean} return false to prevent browser refresh
  */
@@ -151,27 +151,27 @@ function addExpense(event) {
   formLoader.style.display = "block";
   expenseForm.style.display = "none";
 
-  const expenseDate = date.value;
+  const expenseDate = dateEl.value;
   const dateObj = {
     yyyy: expenseDate.substr(0, 4),
     mm: expenseDate.substr(5, 2),
     dd: expenseDate.substr(-2)
   };
 
-  const description = desc.value;
-  const account = accountSelect.value;
-  const category = categorySelect.value;
-  const amountVal = amount.value;
-  const isIncome = income.checked;
+  const descriptionVal = descriptionEl.value;
+  const accountVal = accountEl.value;
+  const categoryVal = categoryEl.value;
+  const amountVal = amountEl.value;
+  const isIncome = isIncomeEl.checked;
 
   gapi.client.sheets.spreadsheets.values
     .append(
       appendRequestObj(spreadsheetId, [
         [
           `=DATE(${dateObj.yyyy}, ${dateObj.mm}, ${dateObj.dd})`,
-          description,
-          account,
-          category,
+          descriptionVal,
+          accountVal,
+          categoryVal,
           isIncome ? 0 : amountVal,
           isIncome ? amountVal : 0
         ]
@@ -180,12 +180,9 @@ function addExpense(event) {
     .then(
       response => {
         // reset fileds
-        date.value = "";
-        desc.value = "";
-        accountSelect.value = "";
-        categorySelect.value = "";
-        amount.value = "";
-        income.checked = false;
+        descriptionEl.value = "";
+        amountEl.value = "";
+        isIncomeEl.value = false;
         formLoader.style.display = "none";
         expenseForm.style.display = "flex";
 
@@ -263,8 +260,8 @@ function updateCategoriesAndAccounts(sheetID) {
     .then(response => {
       const allAccounts = response.result.valueRanges[0].values[0];
       const allCategories = response.result.valueRanges[1].values[0];
-      accountSelect.innerHTML = allAccounts.map(wrapInOption).join();
-      categorySelect.innerHTML = allCategories.map(wrapInOption).join();
+      accountEl.innerHTML = allAccounts.map(wrapInOption).join();
+      categoryEl.innerHTML = allCategories.map(wrapInOption).join();
     });
 }
 
