@@ -6,8 +6,9 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  height: 100vh;
+  justify-content: space-between;
+  /* 100vh - header height */
+  height: calc(100vh - 56px);
   width: 100vw;
 }
 
