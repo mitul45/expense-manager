@@ -8,13 +8,15 @@ body {
   align-items: center;
   justify-content: space-between;
   /* 100vh - header height */
-  height: calc(100vh - 56px);
+  min-height: calc(100vh - 56px);
   width: 100vw;
 }
 
-#expense-form {
+#expense-form, #transfer-form {
   display: flex;
   flex-direction: column;
+  align-items: center;
+  margin-top: 15px;
 }
 
 #authorize-button {
@@ -24,7 +26,58 @@ body {
 
 .footer {
   padding: 10px;
-  background: black;
-  color: white;
+  background: #424242;
+  color: #9e9e9e;
   font-weight: 300 !important;
+  margin-top: 15px;
+  font-size: 12px;
+}
+
+.footer a {
+  color: white;
+  font-size: 12px;
+}
+
+#forms {
+  display: none;
+}
+
+#authorize-button {
+  display: none;
+}
+
+#form-loader {
+  margin: auto;
+}
+
+#signout-button {
+  display: none;
+}
+
+.dropdown {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 300px;
+  margin-bottom: 10px;
+  font-size: 14px;
+}
+
+.dropdown select {
+  margin-left: 10px;
+  flex-grow: 1;
+  max-width: 50%;
+}
+
+/* Material desing overrides */
+.mdl-switch {
+  width: auto;
+}
+
+.mdl-layout__header-row {
+  padding-left: 20px;
+}
+
+.material-icons {
+  font-size: 14px;
 }
