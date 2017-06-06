@@ -1,4 +1,7 @@
 (function() {
+  const utils = window.expenseManager.utils;
+  const elements = window.expenseManager.elements;
+
   // Cached DOM bindings
   const byID = document.getElementById.bind(document);
   const transferFrom = byID("transfer-form");
@@ -10,13 +13,13 @@
   const saveBtn = byID("save");
 
   /**
-  * Append expense to the expense sheet
+  * Append transfer log to the expense sheet
   */
   function save(event) {
     if (!transferFrom.checkValidity()) return false;
 
     event.preventDefault();
-    window.expenseManager.utils.loader.show();
+    utils.showLoader();
 
     const expenseDate = dateEl.value;
     const descriptionVal = descriptionEl.value;
@@ -31,7 +34,7 @@
     };
     gapi.client.sheets.spreadsheets.values
       .append(
-        window.expenseManager.utils.appendRequestObj([
+        utils.appendRequestObj([
           [
             `=DATE(${dateObj.yyyy}, ${dateObj.mm}, ${dateObj.dd})`,
             descriptionVal,
@@ -49,12 +52,9 @@
           // reset fileds
           descriptionEl.value = "";
           amountEl.value = "";
-          window.expenseManager.utils.loader.hide();
-          window.expenseManager.elements.snackbarContainer.MaterialSnackbar.showSnackbar(
-            {
-              message: "Expense added!"
-            }
-          );
+          elements.snackbarContainer.MaterialSnackbar.showSnackbar({
+            message: "Expense added!"
+          });
         },
         response => {
           let message = "Sorry, something went wrong";
@@ -62,22 +62,20 @@
             message = "Please copy the sheet in your drive";
           }
           console.log(response);
-          window.expenseManager.elements.snackbarContainer.MaterialSnackbar.showSnackbar(
-            {
-              message,
-              actionHandler: () => {
-                window.open(
-                  "https://github.com/mitul45/expense-manager/blob/master/README.md#how-to-get-started",
-                  "_blank"
-                );
-              },
-              actionText: "Details",
-              timeout: 5 * 60 * 1000
-            }
-          );
-          window.expenseManager.utils.loader.hide();
+          elements.snackbarContainer.MaterialSnackbar.showSnackbar({
+            message,
+            actionHandler: () => {
+              window.open(
+                "https://github.com/mitul45/expense-manager/blob/master/README.md#how-to-get-started",
+                "_blank"
+              );
+            },
+            actionText: "Details",
+            timeout: 5 * 60 * 1000
+          });
         }
-      );
+      )
+      .finally(utils.hideLoader);
   }
 
   function init(sheetID, accounts) {
@@ -85,12 +83,9 @@
     dateEl.value = new Date().toISOString().substr(0, 10);
 
     // initialize accounts and categories dropdown
-    fromAccountEl.innerHTML = accounts
-      .map(window.expenseManager.utils.wrapInOption)
-      .join();
-    toAccountEl.innerHTML = accounts
-      .map(window.expenseManager.utils.wrapInOption)
-      .join();
+    fromAccountEl.innerHTML = accounts.map(utils.wrapInOption).join();
+    toAccountEl.innerHTML = accounts.map(utils.wrapInOption).join();
+
     // In MDL - `required` input fields are invalid on page load by default (which looks bad).
     // Fix: https://github.com/google/material-design-lite/issues/1502#issuecomment-257405822
     document
@@ -101,7 +96,6 @@
     saveBtn.onclick = save.bind(null);
   }
 
-  window.expenseManager = window.expenseManager || {};
   window.expenseManager.transferForm = {
     init
   };

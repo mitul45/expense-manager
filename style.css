@@ -20,6 +20,7 @@ body {
 }
 
 #authorize-button {
+  display: none;
   margin: auto;
   font-size: 1.5em;
 }
@@ -38,20 +39,12 @@ body {
   font-size: 12px;
 }
 
-#forms {
-  display: none;
-}
-
-#authorize-button {
+#forms, #signout-button {
   display: none;
 }
 
 #form-loader {
   margin: auto;
-}
-
-#signout-button {
-  display: none;
 }
 
 .dropdown {

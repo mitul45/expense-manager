@@ -1,5 +1,5 @@
 (function() {
-  window.expenseManager = window.expenseManager || {};
+  const utils = window.expenseManager.utils;
 
   // Cached DOM bindings
   const byID = document.getElementById.bind(document);
@@ -8,6 +8,9 @@
   const forms = byID("forms");
   const formLoader = byID("form-loader");
   const snackbarContainer = byID("toast-container");
+
+  utils.hideLoader = utils.hideLoader.bind(null, forms, formLoader);
+  utils.showLoader = utils.showLoader.bind(null, forms, formLoader);
 
   /**
   *  On load, called to load the auth2 library and API client library.
@@ -71,10 +74,10 @@
     if (isSignedIn) {
       onSignin();
     } else {
-      showEl(authorizeButton);
-      hideEl(signoutButton);
-      hideEl(expenseForm);
-      hideEl(formLoader);
+      utils.showEl(authorizeButton);
+      utils.hideEl(signoutButton);
+      utils.hideEl(expenseForm);
+      utils.hideEl(formLoader);
     }
   }
 
@@ -82,8 +85,8 @@
   * On successful signin - Update authorization buttons, make a call to get sheetID
   */
   function onSignin() {
-    hideEl(authorizeButton);
-    showEl(signoutButton);
+    utils.hideEl(authorizeButton);
+    utils.showEl(signoutButton);
 
     getSheetID("Expense Sheet")
       .then(getCategoriesAndAccount, sheetNotFound)
@@ -135,7 +138,9 @@
       const CATEGORY_RANGE = "Data!E2:E50";
 
       gapi.client.sheets.spreadsheets.values
-        .batchGet(batchGetRequestObj(sheetID, [ACCOUNT_RANGE, CATEGORY_RANGE]))
+        .batchGet(
+          utils.batchGetRequestObj(sheetID, [ACCOUNT_RANGE, CATEGORY_RANGE])
+        )
         .then(response => {
           const accounts = response.result.valueRanges[0].values[0];
           const categories = response.result.valueRanges[1].values[0];
@@ -145,8 +150,8 @@
   }
 
   function initApp(data) {
-    showEl(forms);
-    hideEl(formLoader);
+    utils.hideLoader();
+
     window.expenseManager.expenseForm.init(
       data.sheetID,
       data.accounts,
@@ -154,118 +159,11 @@
     );
     window.expenseManager.transferForm.init(data.sheetID, data.accounts);
 
-    window.expenseManager.utils.appendRequestObj = appendRequestObj.bind(
-      null,
-      data.sheetID
-    );
+    utils.appendRequestObj = utils.appendRequestObj.bind(null, data.sheetID);
   }
-
-  // utility functions
-  function hideEl(el) {
-    el.style.display = "none";
-  }
-
-  function showEl(el, displayStyle) {
-    el.style.display = displayStyle ? displayStyle : "block";
-  }
-
-  /**
-  * Generate append request object - for given sheet and values to append
-  * Docs: https://developers.google.com/sheets/api/reference/rest/v4/spreadsheets.values/append
-  *
-  * @param {String} spreadsheetId Expense sheet ID
-  * @param {Array} values values to be appended
-  * @returns {Object} request object for append
-  */
-  function appendRequestObj(spreadsheetId, values) {
-    return {
-      // The ID of the spreadsheet to update.
-      spreadsheetId,
-
-      // The A1 notation of a range to search for a logical table of data.
-      // Values will be appended after the last row of the table.
-      range: "Expenses!A1",
-
-      includeValuesInResponse: true,
-
-      responseDateTimeRenderOption: "FORMATTED_STRING",
-
-      responseValueRenderOption: "FORMATTED_VALUE",
-
-      // How the input data should be interpreted.
-      valueInputOption: "USER_ENTERED",
-
-      // How the input data should be inserted.
-      insertDataOption: "INSERT_ROWS",
-
-      resource: {
-        values
-      }
-    };
-  }
-
-  /**
-  * Generate batchGet request object - for given sheet, and range.
-  * Docs: https://developers.google.com/sheets/api/reference/rest/v4/spreadsheets.values/batchGet
-  *
-  * @param {String} sheetID Expense sheet ID
-  * @param {Array} ranges List of ranges in A1 notation
-  * @returns {Object} request object for batchGet
-  */
-  function batchGetRequestObj(spreadsheetId, ranges) {
-    return {
-      spreadsheetId,
-      ranges,
-      dateTimeRenderOption: "FORMATTED_STRING",
-      majorDimension: "COLUMNS",
-      valueRenderOption: "FORMATTED_VALUE"
-    };
-  }
-
-  function wrapInOption(option) {
-    return `<option value='${option}'>${option}</option>`;
-  }
-
-  function showLoader() {
-    hideEl(forms);
-    showEl(formLoader);
-  }
-
-  function hideLoader() {
-    hideEl(formLoader);
-    showEl(forms);
-  }
-
-  window.expenseManager.utils = window.expenseManager.utils || {};
-  window.expenseManager.utils.showEl = showEl;
-  window.expenseManager.utils.hideEl = hideEl;
-  window.expenseManager.utils.wrapInOption = wrapInOption;
-  window.expenseManager.utils.loader = {
-    show: showLoader,
-    hide: hideLoader
-  };
 
   window.expenseManager.elements = window.expenseManager.elements || {};
   window.expenseManager.elements.snackbarContainer = snackbarContainer;
 
   window.handleClientLoad = handleClientLoad.bind(null);
-
-  // register for service worker
-  if ("serviceWorker" in navigator) {
-    window.addEventListener("load", () => {
-      navigator.serviceWorker.register("sw.js").then(
-        registration => {
-          // Registration was successful
-          console.log(
-            "ServiceWorker registration successful with scope: ",
-            registration.scope
-          );
-        },
-        err => {
-          // registration failed :(
-          console.log("ServiceWorker registration failed: ", err);
-        }
-      );
-    });
-  }
 })();
