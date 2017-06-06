@@ -1,6 +1,5 @@
 (function() {
   const utils = window.expenseManager.utils;
-  const elements = window.expenseManager.elements;
 
   // Cached DOM bindings
   const byID = document.getElementById.bind(document);
@@ -11,6 +10,7 @@
   const toAccountEl = byID("transfer-to-account");
   const amountEl = byID("transfer-amount");
   const saveBtn = byID("save");
+  const snackbarContainer = byID("toast-container");
 
   /**
   * Append transfer log to the expense sheet
@@ -40,9 +40,17 @@
             descriptionVal,
             fromAccountVal,
             "Transfers", // category
-            amountVal, // for transfer, income and expese are same
-            amountVal,
-            toAccountVal, // transfer amount
+            amountVal, // expense
+            0, // income
+            true // is internal transfer?
+          ],
+          [
+            `=DATE(${dateObj.yyyy}, ${dateObj.mm}, ${dateObj.dd})`,
+            descriptionVal,
+            toAccountVal,
+            "Transfers", // category
+            0, // expense
+            amountVal, // income
             true // is internal transfer?
           ]
         ])
@@ -52,17 +60,19 @@
           // reset fileds
           descriptionEl.value = "";
           amountEl.value = "";
-          elements.snackbarContainer.MaterialSnackbar.showSnackbar({
+          snackbarContainer.MaterialSnackbar.showSnackbar({
             message: "Expense added!"
           });
+          utils.hideLoader();
         },
         response => {
+          utils.hideLoader();
           let message = "Sorry, something went wrong";
           if (response.status === 403) {
             message = "Please copy the sheet in your drive";
           }
           console.log(response);
-          elements.snackbarContainer.MaterialSnackbar.showSnackbar({
+          snackbarContainer.MaterialSnackbar.showSnackbar({
             message,
             actionHandler: () => {
               window.open(
@@ -74,8 +84,7 @@
             timeout: 5 * 60 * 1000
           });
         }
-      )
-      .finally(utils.hideLoader);
+      );
   }
 
   function init(sheetID, accounts) {

@@ -1,6 +1,5 @@
 (function() {
   const utils = window.expenseManager.utils;
-  const elements = window.expenseManager.elements;
 
   // Cached DOM bindings
   const byID = document.getElementById.bind(document);
@@ -12,6 +11,7 @@
   const amountEl = byID("expense-amount");
   const isIncomeEl = byID("is-income");
   const addExpenseBtn = byID("add-expesne");
+  const snackbarContainer = byID("toast-container");
 
   /**
   * Append expense to the expense sheet
@@ -44,7 +44,6 @@
             categoryVal,
             isIncome ? 0 : amountVal, // income amount
             isIncome ? amountVal : 0, // expense amount
-            "", // to account (from account transfer)
             false // is internal transfer?
           ]
         ])
@@ -54,17 +53,19 @@
           // reset fileds
           descriptionEl.value = "";
           amountEl.value = "";
-          elements.snackbarContainer.MaterialSnackbar.showSnackbar({
+          snackbarContainer.MaterialSnackbar.showSnackbar({
             message: "Expense added!"
           });
+          utils.hideLoader();
         },
         response => {
+          utils.hideLoader();
           let message = "Sorry, something went wrong";
           if (response.status === 403) {
             message = "Please copy the sheet in your drive";
           }
           console.log(response);
-          elements.snackbarContainer.MaterialSnackbar.showSnackbar({
+          snackbarContainer.MaterialSnackbar.showSnackbar({
             message,
             actionHandler: () => {
               window.open(
@@ -76,8 +77,7 @@
             timeout: 5 * 60 * 1000
           });
         }
-      )
-      .finally(utils.hideLoader);
+      );
   }
 
   function init(sheetID, accounts, categories) {

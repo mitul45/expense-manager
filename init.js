@@ -76,7 +76,7 @@
     } else {
       utils.showEl(authorizeButton);
       utils.hideEl(signoutButton);
-      utils.hideEl(expenseForm);
+      utils.hideEl(forms);
       utils.hideEl(formLoader);
     }
   }
@@ -161,9 +161,6 @@
 
     utils.appendRequestObj = utils.appendRequestObj.bind(null, data.sheetID);
   }
-
-  window.expenseManager.elements = window.expenseManager.elements || {};
-  window.expenseManager.elements.snackbarContainer = snackbarContainer;
 
   window.handleClientLoad = handleClientLoad.bind(null);
 })();
