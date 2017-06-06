@@ -85,8 +85,8 @@
     dateEl.value = new Date().toISOString().substr(0, 10);
 
     // initialize accounts and categories dropdown
-    accountEl.innerHTML = accounts.map(utils.wrapInOption).join();
-    categoryEl.innerHTML = categories.map(utils.wrapInOption).join();
+    accountEl.innerHTML = accounts.sort().map(utils.wrapInOption).join();
+    categoryEl.innerHTML = categories.sort().map(utils.wrapInOption).join();
 
     // In MDL - `required` input fields are invalid on page load by default (which looks bad).
     // Fix: https://github.com/google/material-design-lite/issues/1502#issuecomment-257405822
