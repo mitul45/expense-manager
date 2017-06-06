@@ -20,6 +20,7 @@ Detailed analysis of the sheet can be deferred till you get an access to a compu
 - Easier sharing. Sharing expenses with someone (wife, family)? [Share](https://support.google.com/docs/answer/2494822?co=GENIE.Platform%3DDesktop&hl=en) the expense sheet and all of your combined data belongs to the single sheet.  
 - Backup. Didn't I tell you it uses Google Sheets to store expenses? Your data is always backed up on :partly_sunny:
 - [Mobile friendly](http://i.imgur.com/vqz7zDA.png) layout.  
+- [NEW] Supports internal amount transfer enteries (things like withdrawing cash, investing to an retirement account, etc)
 
 ## How to get started
 1. Copy this [sheet](https://docs.google.com/spreadsheets/d/1NfF1A0UC6qLuOE7eiTsAzNVAskNcYeuPHAkzSURH0Pc/edit?usp=sharing) to your Google Drive. After sign in, choose `File -> Make a Copy...`.  
