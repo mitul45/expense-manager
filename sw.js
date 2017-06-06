@@ -3,7 +3,10 @@ var urlsToCache = [
   "style.css",
   "icons/favicon-32x32.png",
   "icons/favicon-16x16.png",
-  "script.js",
+  "init.js",
+  "transfer.js",
+  "utils.js",
+  "expense.js",
   "vendor/mdl/material.min.js",
   "vendor/mdl/material.min.css"
 ];
@@ -28,7 +31,7 @@ self.addEventListener("fetch", function(event) {
         var fetchPromise = fetch(event.request).then(function(networkResponse) {
           // cache same host files only
           if (
-            requestURL.pathname === "mitul45.github.io" ||
+            requestURL.hostname === "mitul45.github.io" ||
             requestURL.hostname === "localhost"
           )
             cache.put(event.request, networkResponse.clone());
