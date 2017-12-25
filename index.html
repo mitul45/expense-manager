@@ -43,7 +43,7 @@
           <div class="mdl-tabs mdl-js-tabs mdl-js-ripple-effect" id="forms">
             <div class="mdl-tabs__tab-bar">
               <a href="#add-expense" class="mdl-tabs__tab is-active"> Expense</a>
-              <a href="#transfer" class="mdl-tabs__tab"> Transfer (New!) </a>
+              <a href="#transfer" class="mdl-tabs__tab"> Transfer </a>
             </div>
 
             <div class="mdl-tabs__panel is-active" id="add-expense">
@@ -54,7 +54,6 @@
                 </div>
                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                   <input class="mdl-textfield__input" type="date" id="expense-date" data-required>
-                  <label class="mdl-textfield__label" for="expense-date">Date</label>
                 </div>
                 <div class="dropdown">
                   <span>From Account</span>
@@ -82,7 +81,7 @@
             <div class="mdl-tabs__panel" id="transfer">
               <form id="transfer-form">
                 <p id="tt1"><i class="material-icons">info</i>&nbsp;What is this?</p>
-                <span for="tt1" class="mdl-tooltip">Now you can record a transaction which is not expense/income. e.g. paying for your credit card bills (saving account -> credit card), withdrawing cash (checkings account -> cash), or making an investment.</span>
+                <span for="tt1" class="mdl-tooltip">Record a transaction which is not expense/income. e.g. paying for your credit card bills (saving account -> credit card), withdrawing cash (checkings account -> cash), or making an investment.</span>
 
                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                   <input class="mdl-textfield__input" type="text" id="transfer-description" data-required>
@@ -111,7 +110,7 @@
                 <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" id="save" type="submit"
                   onclick="addExpense(event)">
                                     Save
-                                </button>
+                </button>
               </form>
             </div>
           </div>
@@ -139,6 +138,7 @@
 
     </script>
 
+  <!--  GA -->
   <script>
     (function (i, s, o, g, r, a, m) {
       i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
