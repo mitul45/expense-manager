@@ -158,6 +158,7 @@
       data.categories
     );
     window.expenseManager.transferForm.init(data.sheetID, data.accounts);
+    window.expenseManager.retrieveData.init(data.sheetID);
 
     utils.appendRequestObj = utils.appendRequestObj.bind(null, data.sheetID);
   }

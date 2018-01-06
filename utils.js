@@ -83,8 +83,40 @@
     };
   }
 
+  /**
+  * Generate get request object - for given sheet, and range.
+  * Docs: https://developers.google.com/sheets/api/reference/rest/v4/spreadsheets.values/get
+  *
+  * @param {String} sheetID Expense sheet ID
+  * @param {String} range in A1 notation
+  * @returns {Object} request object for get
+  */
+  function getRequestObj(spreadsheetId, range) {
+    return {
+      spreadsheetId,
+      range,
+      dateTimeRenderOption: "SERIAL_NUMBER",
+      majorDimension: "ROWS",
+      valueRenderOption: "UNFORMATTED_VALUE"
+    };
+  }
+
   function wrapInOption(option) {
     return `<option value='${option}'>${option}</option>`;
+  }
+
+  /**
+   * Excel/Google Sheets returns date in Lotus format.
+   * References: https://developers.google.com/sheets/api/reference/rest/v4/DateTimeRenderOption
+   *
+   * @param {Number} lotusDay - Number of days passed since December 30th 1899.
+   * @returns {Date} Javascript date object of the same day
+   */
+  function convertLotusDayToJSDate(lotusDay) {
+    lotusDay = window.parseInt(lotusDay);
+    let date = new Date(1899, 11, 30);
+    date.setDate(date.getDate() + lotusDay);
+    return date;
   }
 
   window.expenseManager = window.expenseManager || {};
@@ -95,6 +127,8 @@
     showLoader,
     wrapInOption,
     batchGetRequestObj,
-    appendRequestObj
+    getRequestObj,
+    appendRequestObj,
+    convertLotusDayToJSDate
   };
 })();
