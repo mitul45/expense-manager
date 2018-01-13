@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
   <link rel="stylesheet" type="text/css" href="style.css">
   <script src="vendor/mdl/material.min.js"></script>
+  <script src="vendor/Chart.min.js"></script>
   <link rel="icon" type="image/png" href="icons/favicon-32x32.png" sizes="32x32" />
   <link rel="icon" type="image/png" href="icons/favicon-16x16.png" sizes="16x16" />
   <link rel="manifest" href="manifest.json">
@@ -117,7 +118,7 @@
           </div>
 
           <div id="charts" class="block charts">
-              <table id="accounts" class="mdl-data-table mdl-js-data-table">
+              <table class="mdl-data-table mdl-js-data-table charts__accounts">
                 <thead>
                   <tr>
                     <th class="mdl-data-table__cell--non-numeric"> Account </th>
@@ -127,6 +128,9 @@
                 <tbody>
                 </tbody>
               </table>
+              <div class="charts__overview">
+                  <canvas></canvas>
+              </div>
           </div>
         </div>
       <div id="toast-container" class="mdl-js-snackbar mdl-snackbar">

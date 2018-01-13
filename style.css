@@ -76,3 +76,13 @@ body {
 .material-icons {
   font-size: 14px;
 }
+
+.charts {
+  display: flex;
+  flex-direction: column;
+}
+
+.charts__accounts th,
+.charts__accounts td {
+  border-right: 1px solid rgba(0,0,0,.12);
+}
