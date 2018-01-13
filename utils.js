@@ -79,7 +79,7 @@
       ranges,
       dateTimeRenderOption: "FORMATTED_STRING",
       majorDimension: "COLUMNS",
-      valueRenderOption: "FORMATTED_VALUE"
+      valueRenderOption: "UNFORMATTED_VALUE"
     };
   }
 

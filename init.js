@@ -134,7 +134,7 @@
     */
   function getCategoriesAndAccount(sheetID) {
     return new Promise((resolve, reject) => {
-      const ACCOUNT_RANGE = "Data!A2:A50";
+      const ACCOUNT_RANGE = "Data!A2:B50";
       const CATEGORY_RANGE = "Data!E2:E50";
 
       gapi.client.sheets.spreadsheets.values
@@ -142,7 +142,10 @@
           utils.batchGetRequestObj(sheetID, [ACCOUNT_RANGE, CATEGORY_RANGE])
         )
         .then(response => {
-          const accounts = response.result.valueRanges[0].values[0];
+          const accounts = {};
+          response.result.valueRanges[0].values[0].forEach((accountName, index) => {
+              accounts[accountName] = response.result.valueRanges[0].values[1][index].toFixed(2);
+          });
           const categories = response.result.valueRanges[1].values[0];
           resolve({ sheetID, accounts, categories });
         });
@@ -154,10 +157,10 @@
 
     window.expenseManager.expenseForm.init(
       data.sheetID,
-      data.accounts,
+      Object.keys(data.accounts),
       data.categories
     );
-    window.expenseManager.transferForm.init(data.sheetID, data.accounts);
+    window.expenseManager.transferForm.init(data.sheetID, Object.keys(data.accounts));
     window.expenseManager.retrieveData.init(data.sheetID);
 
     utils.appendRequestObj = utils.appendRequestObj.bind(null, data.sheetID);
