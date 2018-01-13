@@ -90,11 +90,12 @@
   function init(sheetID, accounts) {
     // set date picker's defalt value as today
     dateEl.value = new Date().toISOString().substr(0, 10);
-    accounts = accounts.sort();
 
     // initialize accounts and categories dropdown
-    fromAccountEl.innerHTML = accounts.map(utils.wrapInOption).join();
-    toAccountEl.innerHTML = accounts.map(utils.wrapInOption).join();
+    accounts.forEach(account => {
+      fromAccountEl.appendChild(utils.wrapInOption(account))
+      toAccountEl.appendChild(utils.wrapInOption(account))
+    })
 
     // In MDL - `required` input fields are invalid on page load by default (which looks bad).
     // Fix: https://github.com/google/material-design-lite/issues/1502#issuecomment-257405822

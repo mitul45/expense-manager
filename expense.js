@@ -85,8 +85,13 @@
     dateEl.value = new Date().toISOString().substr(0, 10);
 
     // initialize accounts and categories dropdown
-    accountEl.innerHTML = accounts.sort().map(utils.wrapInOption).join();
-    categoryEl.innerHTML = categories.sort().map(utils.wrapInOption).join();
+    accounts.forEach(account => {
+      accountEl.appendChild(utils.wrapInOption(account));
+    })
+
+    categories.forEach(category => {
+      categoryEl.appendChild(utils.wrapInOption(category));
+    })
 
     // set lister for `Save` button
     addExpenseBtn.onclick = addExpense.bind(null);

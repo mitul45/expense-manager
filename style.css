@@ -4,12 +4,10 @@ body {
 
 .flex-container {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-  /* 100vh - header height */
-  min-height: calc(100vh - 56px);
-  width: 100vw;
+  /* 100vh - header + footer height */
+  min-height: calc(100vh - 131px);
+  flex-wrap: wrap;
+  justify-content: space-around;
 }
 
 #expense-form, #transfer-form {
@@ -39,11 +37,15 @@ body {
   font-size: 12px;
 }
 
-#forms, #signout-button {
+.block {
+  margin: 20px;
+}
+
+#forms, #signout-button, #charts {
   display: none;
 }
 
-#form-loader {
+#loader {
   margin: auto;
 }
 

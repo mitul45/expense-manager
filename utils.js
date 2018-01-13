@@ -17,17 +17,19 @@
   /**
    * show loader, hide forms
    */
-  function showLoader(forms, loader) {
+  function showLoader(forms, charts, loader) {
     hideEl(forms);
+    hideEl(charts);
     showEl(loader);
   }
 
   /**
    * hide loader, show forms
    */
-  function hideLoader(forms, loader) {
+  function hideLoader(forms, charts, loader) {
     hideEl(loader);
     showEl(forms);
+    showEl(charts);
   }
 
   /**
@@ -102,7 +104,22 @@
   }
 
   function wrapInOption(option) {
-    return `<option value='${option}'>${option}</option>`;
+    const optionEl = document.createElement("option");
+    optionEl.value = option;
+    optionEl.innerHTML = option;
+    return optionEl;
+  }
+
+  function createTR(items) {
+    const TR = document.createElement("tr");
+    items.forEach(item => {
+      const TD = document.createElement("td");
+      TD.innerHTML = item.value;
+      if (item.className)
+        TD.classList.add(item.className);
+      TR.appendChild(TD);
+    });
+    return TR;
   }
 
   /**
@@ -129,6 +146,7 @@
     batchGetRequestObj,
     getRequestObj,
     appendRequestObj,
+    createTR,
     convertLotusDayToJSDate
   };
 })();

@@ -6,11 +6,12 @@
   const authorizeButton = byID("authorize-button");
   const signoutButton = byID("signout-button");
   const forms = byID("forms");
-  const formLoader = byID("form-loader");
+  const charts = byID("charts");
+  const loader = byID("loader");
   const snackbarContainer = byID("toast-container");
 
-  utils.hideLoader = utils.hideLoader.bind(null, forms, formLoader);
-  utils.showLoader = utils.showLoader.bind(null, forms, formLoader);
+  utils.hideLoader = utils.hideLoader.bind(null, forms, charts, loader);
+  utils.showLoader = utils.showLoader.bind(null, forms, charts, loader);
 
   /**
   *  On load, called to load the auth2 library and API client library.
@@ -77,7 +78,8 @@
       utils.showEl(authorizeButton);
       utils.hideEl(signoutButton);
       utils.hideEl(forms);
-      utils.hideEl(formLoader);
+      utils.hideEl(charts);
+      utils.hideEl(loader);
     }
   }
 
@@ -87,6 +89,7 @@
   function onSignin() {
     utils.hideEl(authorizeButton);
     utils.showEl(signoutButton);
+    utils.showEl(charts);
 
     getSheetID("Expense Sheet")
       .then(getCategoriesAndAccount, sheetNotFound)
@@ -161,7 +164,9 @@
       data.categories
     );
     window.expenseManager.transferForm.init(data.sheetID, Object.keys(data.accounts));
-    window.expenseManager.retrieveData.init(data.sheetID);
+    window.expenseManager.retrieveData.init(data.sheetID).then(
+      window.expenseManager.plotHighlevelCharts.init.bind(null, data.accounts, data.categories)
+    )
 
     utils.appendRequestObj = utils.appendRequestObj.bind(null, data.sheetID);
   }

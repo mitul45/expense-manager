@@ -26,9 +26,7 @@
   }
 
   function init(sheetID) {
-    getAllExpenses(sheetID).then(formatDate).then(allExpenses => {
-      console.log(allExpenses);
-    })
+    return getAllExpenses(sheetID).then(formatDate);
   }
 
   window.expenseManager.retrieveData = {
