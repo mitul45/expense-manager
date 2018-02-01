@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html>
-
     <head>
         <title>Expense Manager</title>
         <meta charset='utf-8' />
@@ -19,7 +18,6 @@
         <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
             <header class="mdl-layout__header">
                 <div class="mdl-layout__header-row">
-                    <!-- Title -->
                     <span class="mdl-layout-title">
                         Expense Manager
                     </span>
@@ -37,7 +35,12 @@
             <main class="mdl-layout__content">
                 <div class="page-content">
                     <div class="flex-container">
-                        <button id="authorize-button" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">Login</button>
+                        <button 
+                            id="authorize-button" 
+                            class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"
+                        >
+                            Login
+                        </button>
                         <div class="mdl-spinner mdl-js-spinner is-active" id="loader"></div>
                         <div id="forms" class="block">
                             <div class="mdl-tabs mdl-js-tabs mdl-js-ripple-effect">
@@ -73,7 +76,15 @@
                                         </label>
                                         <br>
                                         <br>
-                                        <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" id="add-expesne" type="submit">
+                                        <button 
+                                            class="mdl-button 
+                                                   mdl-js-button 
+                                                   mdl-button--raised 
+                                                   mdl-js-ripple-effect 
+                                                   mdl-button--accent" 
+                                            id="add-expesne" 
+                                            type="submit"
+                                        >
                                             Save
                                         </button>
                                     </form>
@@ -81,7 +92,11 @@
                                 <div class="mdl-tabs__panel" id="transfer">
                                     <form id="transfer-form">
                                         <p id="tt1"><i class="material-icons">info</i>&nbsp;What is this?</p>
-                                        <span for="tt1" class="mdl-tooltip">Record a transaction which is not expense/income. e.g. paying for your credit card bills (saving account -> credit card), withdrawing cash (checkings account -> cash), or making an investment.</span>
+                                        <span for="tt1" class="mdl-tooltip">
+                                            Record a transaction which is not expense/income. e.g. paying for your 
+                                            credit card bills (saving account -> credit card), withdrawing cash 
+                                            (checkings account -> cash), or making an investment.
+                                        </span>
 
                                         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                                             <input class="mdl-textfield__input" type="text" id="transfer-description" data-required>
@@ -107,8 +122,12 @@
                                         </div>
                                         <br>
                                         <br>
-                                        <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" id="save" type="submit"
-                                            onclick="addExpense(event)">
+                                        <button 
+                                            class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" 
+                                            id="save" 
+                                            type="submit"
+                                            onclick="addExpense(event)"
+                                        >
                                             Save
                                         </button>
                                     </form>
@@ -139,7 +158,10 @@
                 </div>
             </main>
             <footer class="footer">
-                Built using <a href="https://developers.google.com/sheets/">Google Sheets API</a> and <a href="https://getmdl.io">Material Design Lite</a>            by <a href="https://mitul45.github.io">Mitul</a>. Hosted on <a href="https://pages.github.com/">GitHub Pages</a>.
+                Built using <a href="https://developers.google.com/sheets/">Google Sheets API</a> and 
+                <a href="https://getmdl.io">Material Design Lite</a> 
+                by <a href="https://mitul45.github.io">Mitul</a>. 
+                Hosted on <a href="https://pages.github.com/">GitHub Pages</a>.
             </footer>
         </div>
 
@@ -151,9 +173,14 @@
         <script type="text/javascript" src="init.js"></script>
         <script type="text/javascript" src="register-serviceworker.js"></script>
 
-        <script async defer src="https://apis.google.com/js/api.js" onload="this.onload=function(){};handleClientLoad()" onreadystatechange="if (this.readyState === 'complete') this.onload()"
-            id="google-api">
-
+        <script 
+            async 
+            defer 
+            src="https://apis.google.com/js/api.js" 
+            onload="this.onload=function(){};handleClientLoad()" 
+            onreadystatechange="if (this.readyState === 'complete') this.onload()"
+            id="google-api"
+        >
         </script>
 
         <!--  GA -->
