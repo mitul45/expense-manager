@@ -2,12 +2,20 @@ body {
   font-size: 16px;
 }
 
-.flex-container {
+.summary {
   display: flex;
-  /* 100vh - header + footer height */
-  min-height: calc(100vh - 131px);
   flex-wrap: wrap;
   justify-content: space-around;
+}
+
+.summary__forms,
+.summary__balances {
+  margin: 2em 0;
+}
+
+.summary__balances th,
+.summary__balances td {
+  border-right: 1px solid rgba(0,0,0,.12);
 }
 
 #expense-form, #transfer-form {
@@ -19,26 +27,8 @@ body {
 
 #authorize-button {
   display: none;
-  margin: auto;
+  margin: 5em auto;
   font-size: 1.5em;
-}
-
-.footer {
-  padding: 10px;
-  background: #424242;
-  color: #9e9e9e;
-  font-weight: 300 !important;
-  margin-top: 15px;
-  font-size: 12px;
-}
-
-.footer a {
-  color: white;
-  font-size: 12px;
-}
-
-.block {
-  margin: 20px;
 }
 
 #forms, #signout-button, #charts {
@@ -53,7 +43,7 @@ body {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  width: 300px;
+  width: 100%;
   margin-bottom: 10px;
   font-size: 14px;
 }
@@ -62,6 +52,30 @@ body {
   margin-left: 10px;
   flex-grow: 1;
   max-width: 50%;
+}
+
+.details {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.details__overall {
+  width: 90vw;
+}
+
+.footer {
+  padding: 10px;
+  background: #424242;
+  color: #9e9e9e;
+  font-weight: 300 !important;
+  font-size: 12px;
+  margin-top: 15px;
+}
+
+.footer a {
+  color: white;
+  font-size: 12px;
 }
 
 /* Material desing overrides */
@@ -77,12 +91,7 @@ body {
   font-size: 14px;
 }
 
-.charts {
-  display: flex;
-  flex-direction: column;
-}
-
-.charts__accounts th,
-.charts__accounts td {
-  border-right: 1px solid rgba(0,0,0,.12);
+.mdl-layout__content {
+  overflow-x: unset;
+  overflow-y: unset;
 }

@@ -164,8 +164,9 @@
       data.categories
     );
     window.expenseManager.transferForm.init(data.sheetID, Object.keys(data.accounts));
+    window.expenseManager.showAccountBalances.init(data.accounts);
     window.expenseManager.retrieveData.init(data.sheetID).then(
-      window.expenseManager.plotHighlevelCharts.init.bind(null, data.accounts, data.categories)
+      window.expenseManager.plotCharts.init.bind(null, data.categories)
     )
 
     utils.appendRequestObj = utils.appendRequestObj.bind(null, data.sheetID);

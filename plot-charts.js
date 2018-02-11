@@ -1,19 +1,5 @@
 (function() {
 
-  function showAccountBalances(accounts) {
-    const accountsTableBody = document.querySelector(".charts__accounts tbody");
-    accountsTableBody.innerHTML = "";
-
-    Object.keys(accounts).sort().forEach(account => {
-      accountsTableBody.appendChild(
-        window.expenseManager.utils.createTR([
-          { value: account, className: "mdl-data-table__cell--non-numeric" },
-          { value: accounts[account] }
-        ])
-      )
-    })
-  }
-
   function getMonthlyExpense(expenses, category) {
     const today = new Date();
     const data = {
@@ -60,7 +46,7 @@
   }
 
   function ployMontlyExpenseChart(categories, allExpenses) {
-    const ctx = document.querySelector(".charts__overview canvas").getContext('2d');
+    const ctx = document.querySelector(".details__overall canvas").getContext('2d');
     const data = getMonthlyExpense(allExpenses);
     const chart = new Chart(ctx, {
       type: 'bar',
@@ -80,12 +66,11 @@
 
   }
 
-  function init(accounts, categories, allExpenses) {
-    showAccountBalances(accounts);
+  function init(categories, allExpenses) {
     ployMontlyExpenseChart(categories, allExpenses);
   }
 
-  window.expenseManager.plotHighlevelCharts = {
+  window.expenseManager.plotCharts = {
     init
   }
 })();

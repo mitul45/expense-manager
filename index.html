@@ -33,128 +33,131 @@
                 </div>
             </header>
             <main class="mdl-layout__content">
-                <div class="page-content">
-                    <div class="flex-container">
-                        <button 
-                            id="authorize-button" 
-                            class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"
-                        >
-                            Login
-                        </button>
-                        <div class="mdl-spinner mdl-js-spinner is-active" id="loader"></div>
-                        <div id="forms" class="block">
-                            <div class="mdl-tabs mdl-js-tabs mdl-js-ripple-effect">
-                                <div class="mdl-tabs__tab-bar">
-                                    <a href="#add-expense" class="mdl-tabs__tab is-active"> Expense</a>
-                                    <a href="#transfer" class="mdl-tabs__tab"> Transfer </a>
-                                </div>
-
-                                <div class="mdl-tabs__panel is-active" id="add-expense">
-                                    <form id="expense-form">
-                                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                                            <input class="mdl-textfield__input" type="text" id="expense-description" data-required>
-                                            <label class="mdl-textfield__label" for="expense-description">Description</label>
-                                        </div>
-                                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                                            <input class="mdl-textfield__input" type="date" id="expense-date" data-required>
-                                        </div>
-                                        <div class="dropdown">
-                                            <span>From Account</span>
-                                            <select id="expense-account" data-required></select>
-                                        </div>
-                                        <div class="dropdown">
-                                            <span>Category</span>
-                                            <select id="expense-category" data-required></select>
-                                        </div>
-                                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                                            <input class="mdl-textfield__input" type="number" id="expense-amount" step="0.01" data-required>
-                                            <label class="mdl-textfield__label" for="expense-amount">Amount</label>
-                                        </div>
-                                        <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="is-income">
-                                            <input type="checkbox" id="is-income" class="mdl-switch__input" />
-                                            <span class="mdl-switch__label"> income? </span>
-                                        </label>
-                                        <br>
-                                        <br>
-                                        <button 
-                                            class="mdl-button 
-                                                   mdl-js-button 
-                                                   mdl-button--raised 
-                                                   mdl-js-ripple-effect 
-                                                   mdl-button--accent" 
-                                            id="add-expesne" 
-                                            type="submit"
-                                        >
-                                            Save
-                                        </button>
-                                    </form>
-                                </div>
-                                <div class="mdl-tabs__panel" id="transfer">
-                                    <form id="transfer-form">
-                                        <p id="tt1"><i class="material-icons">info</i>&nbsp;What is this?</p>
-                                        <span for="tt1" class="mdl-tooltip">
-                                            Record a transaction which is not expense/income. e.g. paying for your 
-                                            credit card bills (saving account -> credit card), withdrawing cash 
-                                            (checkings account -> cash), or making an investment.
-                                        </span>
-
-                                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                                            <input class="mdl-textfield__input" type="text" id="transfer-description" data-required>
-                                            <label class="mdl-textfield__label" for="transfer-description">Description</label>
-                                        </div>
-                                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                                            <input class="mdl-textfield__input" type="date" id="transfer-date" data-required>
-                                            <label class="mdl-textfield__label" for="transfer-date">Date</label>
-                                        </div>
-                                        <div class="dropdown">
-                                            <span>From Account</span>
-                                            <select id="transfer-from-account" data-required>
-                                            </select>
-                                        </div>
-                                        <div class="dropdown">
-                                            <span>To Account</span>
-                                            <select id="transfer-to-account" data-required>
-                                            </select>
-                                        </div>
-                                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                                            <input class="mdl-textfield__input" type="number" id="transfer-amount" step="0.01" data-required>
-                                            <label class="mdl-textfield__label" for="transfer-amount">Amount</label>
-                                        </div>
-                                        <br>
-                                        <br>
-                                        <button 
-                                            class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" 
-                                            id="save" 
-                                            type="submit"
-                                            onclick="addExpense(event)"
-                                        >
-                                            Save
-                                        </button>
-                                    </form>
-                                </div>
+                <div class="summary">
+                    <button 
+                        id="authorize-button" 
+                        class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"
+                    >
+                        Login
+                    </button>
+                    <div class="mdl-spinner mdl-js-spinner is-active" id="loader"></div>
+                    <div id="forms" class="summary__forms">
+                        <div class="mdl-tabs mdl-js-tabs mdl-js-ripple-effect">
+                            <div class="mdl-tabs__tab-bar">
+                                <a href="#add-expense" class="mdl-tabs__tab is-active"> Expense</a>
+                                <a href="#transfer" class="mdl-tabs__tab"> Transfer </a>
                             </div>
-                        </div>
 
-                        <div id="charts" class="block charts">
-                            <table class="mdl-data-table mdl-js-data-table charts__accounts">
-                                <thead>
-                                    <tr>
-                                        <th class="mdl-data-table__cell--non-numeric"> Account </th>
-                                        <th> Balance </th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                </tbody>
-                            </table>
-                            <div class="charts__overview">
-                                <canvas></canvas>
+                            <div class="mdl-tabs__panel is-active" id="add-expense">
+                                <form id="expense-form">
+                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                        <input class="mdl-textfield__input" type="text" id="expense-description" data-required>
+                                        <label class="mdl-textfield__label" for="expense-description">Description</label>
+                                    </div>
+                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                        <input class="mdl-textfield__input" type="date" id="expense-date" data-required>
+                                    </div>
+                                    <div class="dropdown">
+                                        <span>From Account</span>
+                                        <select id="expense-account" data-required></select>
+                                    </div>
+                                    <div class="dropdown">
+                                        <span>Category</span>
+                                        <select id="expense-category" data-required></select>
+                                    </div>
+                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                        <input class="mdl-textfield__input" type="number" id="expense-amount" step="0.01" data-required>
+                                        <label class="mdl-textfield__label" for="expense-amount">Amount</label>
+                                    </div>
+                                    <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="is-income">
+                                        <input type="checkbox" id="is-income" class="mdl-switch__input" />
+                                        <span class="mdl-switch__label"> income? </span>
+                                    </label>
+                                    <br>
+                                    <br>
+                                    <button 
+                                        class="mdl-button 
+                                               mdl-js-button 
+                                               mdl-button--raised 
+                                               mdl-js-ripple-effect 
+                                               mdl-button--accent" 
+                                        id="add-expesne" 
+                                        type="submit"
+                                    >
+                                        Save
+                                    </button>
+                                </form>
+                            </div>
+                            <div class="mdl-tabs__panel" id="transfer">
+                                <form id="transfer-form">
+                                    <p id="tt1"><i class="material-icons">info</i>&nbsp;What is this?</p>
+                                    <span for="tt1" class="mdl-tooltip">
+                                        Record a transaction which is not expense/income. e.g. paying for your 
+                                        credit card bills (saving account -> credit card), withdrawing cash 
+                                        (checkings account -> cash), or making an investment.
+                                    </span>
+
+                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                        <input class="mdl-textfield__input" type="text" id="transfer-description" data-required>
+                                        <label class="mdl-textfield__label" for="transfer-description">Description</label>
+                                    </div>
+                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                        <input class="mdl-textfield__input" type="date" id="transfer-date" data-required>
+                                        <label class="mdl-textfield__label" for="transfer-date">Date</label>
+                                    </div>
+                                    <div class="dropdown">
+                                        <span>From Account</span>
+                                        <select id="transfer-from-account" data-required>
+                                        </select>
+                                    </div>
+                                    <div class="dropdown">
+                                        <span>To Account</span>
+                                        <select id="transfer-to-account" data-required>
+                                        </select>
+                                    </div>
+                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                        <input class="mdl-textfield__input" type="number" id="transfer-amount" step="0.01" data-required>
+                                        <label class="mdl-textfield__label" for="transfer-amount">Amount</label>
+                                    </div>
+                                    <br>
+                                    <br>
+                                    <button 
+                                        class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" 
+                                        id="save" 
+                                        type="submit"
+                                        onclick="addExpense(event)"
+                                    >
+                                        Save
+                                    </button>
+                                </form>
                             </div>
                         </div>
                     </div>
-                    <div id="toast-container" class="mdl-js-snackbar mdl-snackbar">
-                        <div class="mdl-snackbar__text"></div>
-                        <button class="mdl-snackbar__action" type="button"></button>
+                    <div id="charts" class="summary__balances">
+                        <table class="mdl-data-table mdl-js-data-table charts__accounts">
+                            <thead>
+                                <tr>
+                                    <th class="mdl-data-table__cell--non-numeric"> Account </th>
+                                    <th> Balance </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
                     </div>
+                </div>
+                <div class="details">
+                    <div class="details__category">
+                        <select id="deatils-category" class="details__category__select">
+                        </select>
+                        </div>
+                    <div class="details__overall">
+                        <canvas></canvas>
+                    </div>
+                </div>
+                <div id="toast-container" class="mdl-js-snackbar mdl-snackbar">
+                    <div class="mdl-snackbar__text"></div>
+                    <button class="mdl-snackbar__action" type="button"></button>
                 </div>
             </main>
             <footer class="footer">
@@ -169,7 +172,8 @@
         <script type="text/javascript" src="expense.js"></script>
         <script type="text/javascript" src="transfer.js"></script>
         <script type="text/javascript" src="retrieve-data.js"></script>
-        <script type="text/javascript" src="plot-highlevel-charts.js"></script>
+        <script type="text/javascript" src="plot-charts.js"></script>
+        <script type="text/javascript" src="show-account-balances.js"></script>
         <script type="text/javascript" src="init.js"></script>
         <script type="text/javascript" src="register-serviceworker.js"></script>
 
