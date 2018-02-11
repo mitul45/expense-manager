@@ -1,4 +1,18 @@
 (function() {
+  const months = [
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'May',
+    'Jun',
+    'Jul',
+    'Aug',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dec'
+  ]
   let overallChart;
 
   function getMonthlyExpense(expenses, category) {
@@ -36,7 +50,7 @@
       })
 
       if (monthlyExpense) {
-        data.labels.push(`${indexMonth + 1} - ${indexYear}`);
+        data.labels.push(`${months[indexMonth]} ${indexYear}`);
         data.expense.push(monthlyExpense.toFixed(2));
       }
 
