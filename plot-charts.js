@@ -1,4 +1,5 @@
 (function() {
+  let overallChart;
 
   function getMonthlyExpense(expenses, category) {
     const today = new Date();
@@ -23,7 +24,7 @@
           const expenseYear = expenseDate.getFullYear();
 
           if (expenseMonth === indexMonth && expenseYear === indexYear) {
-            if (category) {
+            if (category && category !== "All") {
               if (expenseCategory === category) {
                 monthlyExpense += amount;
               }
@@ -45,29 +46,52 @@
     return data;
   }
 
-  function ployMontlyExpenseChart(categories, allExpenses) {
-    const ctx = document.querySelector(".details__overall canvas").getContext('2d');
-    const data = getMonthlyExpense(allExpenses);
-    const chart = new Chart(ctx, {
-      type: 'bar',
-      data: {
-        labels: data.labels,
-        datasets: [{
-          data: data.expense,
-          borderWidth: 1
-        }]
-      },
-      options: {
-        legend: {
-          display: false,
-        }
-      }
-    });
+  function updateData(chart, data) {
+    chart.data.labels = data.labels;
+    chart.data.datasets[0].data = data.expense;
+    chart.update();
+  }
 
+  function ployMontlyExpenseChart(allExpenses, category) {
+    const ctx = document.querySelector(".details__overall canvas").getContext('2d');
+    const data = getMonthlyExpense(allExpenses, category);
+    if (overallChart) {
+      updateData(overallChart, data);
+    } else {
+      overallChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: data.labels,
+          datasets: [{
+            data: data.expense,
+            borderWidth: 1
+          }]
+        },
+        options: {
+          legend: {
+            display: false,
+          }
+        }
+      });
+    }
+  }
+
+  function setupSelect(categories, allExpenses) {
+    const el = window.document.querySelector(".details__category__select");
+    const option = window.expenseManager.utils.wrapInOption;
+    el.appendChild(option("All"));
+    categories.sort().forEach(category => {
+      el.appendChild(option(category));
+    })
+
+    el.addEventListener("change", () => {
+      ployMontlyExpenseChart(allExpenses, el.value)
+    });
   }
 
   function init(categories, allExpenses) {
-    ployMontlyExpenseChart(categories, allExpenses);
+    setupSelect(categories, allExpenses);
+    ployMontlyExpenseChart(allExpenses);
   }
 
   window.expenseManager.plotCharts = {
