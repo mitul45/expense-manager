@@ -3,7 +3,7 @@
    * @param {DOMElement} el
    */
   function hideEl(el) {
-    el.style.display = "none";
+    el.style.display = 'none';
   }
 
   /**
@@ -11,7 +11,7 @@
    * @param  {String} displayStyle - (optional) flex, inline
    */
   function showEl(el, displayStyle) {
-    el.style.display = displayStyle ? displayStyle : "block";
+    el.style.display = displayStyle ? displayStyle : 'block';
   }
 
   /**
@@ -33,13 +33,13 @@
   }
 
   /**
-  * Generate append request object - for given sheet and values to append
-  * Docs: https://developers.google.com/sheets/api/reference/rest/v4/spreadsheets.values/append
-  *
-  * @param {String} spreadsheetId Expense sheet ID
-  * @param {Array} values values to be appended
-  * @returns {Object} request object for append
-  */
+   * Generate append request object - for given sheet and values to append
+   * Docs: https://developers.google.com/sheets/api/reference/rest/v4/spreadsheets.values/append
+   *
+   * @param {String} spreadsheetId Expense sheet ID
+   * @param {Array} values values to be appended
+   * @returns {Object} request object for append
+   */
   function appendRequestObj(spreadsheetId, values) {
     return {
       // The ID of the spreadsheet to update.
@@ -47,76 +47,75 @@
 
       // The A1 notation of a range to search for a logical table of data.
       // Values will be appended after the last row of the table.
-      range: "Expenses!A1",
+      range: 'Expenses!A1',
 
       includeValuesInResponse: true,
 
-      responseDateTimeRenderOption: "FORMATTED_STRING",
+      responseDateTimeRenderOption: 'FORMATTED_STRING',
 
-      responseValueRenderOption: "FORMATTED_VALUE",
+      responseValueRenderOption: 'FORMATTED_VALUE',
 
       // How the input data should be interpreted.
-      valueInputOption: "USER_ENTERED",
+      valueInputOption: 'USER_ENTERED',
 
       // How the input data should be inserted.
-      insertDataOption: "INSERT_ROWS",
+      insertDataOption: 'INSERT_ROWS',
 
       resource: {
-        values
-      }
+        values,
+      },
     };
   }
 
   /**
-  * Generate batchGet request object - for given sheet, and range.
-  * Docs: https://developers.google.com/sheets/api/reference/rest/v4/spreadsheets.values/batchGet
-  *
-  * @param {String} sheetID Expense sheet ID
-  * @param {Array} ranges List of ranges in A1 notation
-  * @returns {Object} request object for batchGet
-  */
+   * Generate batchGet request object - for given sheet, and range.
+   * Docs: https://developers.google.com/sheets/api/reference/rest/v4/spreadsheets.values/batchGet
+   *
+   * @param {String} sheetID Expense sheet ID
+   * @param {Array} ranges List of ranges in A1 notation
+   * @returns {Object} request object for batchGet
+   */
   function batchGetRequestObj(spreadsheetId, ranges) {
     return {
       spreadsheetId,
       ranges,
-      dateTimeRenderOption: "FORMATTED_STRING",
-      majorDimension: "COLUMNS",
-      valueRenderOption: "UNFORMATTED_VALUE"
+      dateTimeRenderOption: 'FORMATTED_STRING',
+      majorDimension: 'COLUMNS',
+      valueRenderOption: 'UNFORMATTED_VALUE',
     };
   }
 
   /**
-  * Generate get request object - for given sheet, and range.
-  * Docs: https://developers.google.com/sheets/api/reference/rest/v4/spreadsheets.values/get
-  *
-  * @param {String} sheetID Expense sheet ID
-  * @param {String} range in A1 notation
-  * @returns {Object} request object for get
-  */
+   * Generate get request object - for given sheet, and range.
+   * Docs: https://developers.google.com/sheets/api/reference/rest/v4/spreadsheets.values/get
+   *
+   * @param {String} sheetID Expense sheet ID
+   * @param {String} range in A1 notation
+   * @returns {Object} request object for get
+   */
   function getRequestObj(spreadsheetId, range) {
     return {
       spreadsheetId,
       range,
-      dateTimeRenderOption: "SERIAL_NUMBER",
-      majorDimension: "ROWS",
-      valueRenderOption: "UNFORMATTED_VALUE"
+      dateTimeRenderOption: 'SERIAL_NUMBER',
+      majorDimension: 'ROWS',
+      valueRenderOption: 'UNFORMATTED_VALUE',
     };
   }
 
   function wrapInOption(option) {
-    const optionEl = document.createElement("option");
+    const optionEl = document.createElement('option');
     optionEl.value = option;
     optionEl.innerHTML = option;
     return optionEl;
   }
 
   function createTR(items) {
-    const TR = document.createElement("tr");
+    const TR = document.createElement('tr');
     items.forEach(item => {
-      const TD = document.createElement("td");
+      const TD = document.createElement('td');
       TD.innerHTML = item.value;
-      if (item.className)
-        TD.classList.add(item.className);
+      if (item.className) TD.classList.add(item.className);
       TR.appendChild(TD);
     });
     return TR;
@@ -136,6 +135,8 @@
     return date;
   }
 
+  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
   window.expenseManager = window.expenseManager || {};
   window.expenseManager.utils = window.expenseManager.utils || {
     showEl,
@@ -147,6 +148,7 @@
     getRequestObj,
     appendRequestObj,
     createTR,
-    convertLotusDayToJSDate
+    convertLotusDayToJSDate,
+    months,
   };
 })();

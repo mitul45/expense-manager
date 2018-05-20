@@ -14,11 +14,13 @@ body {
 }
 
 .summary__balances th,
-.summary__balances td {
+.summary__balances td,
+.monthly-details__top-expenses__table td {
   border-right: 1px solid rgba(0,0,0,.12);
 }
 
-.summary__balances td:last-child {
+.summary__balances td:last-child,
+.monthly-details__top-expenses__table td:last-child {
   font-family: monospace;
 }
 
@@ -98,4 +100,30 @@ body {
 .mdl-layout__content {
   overflow-x: unset;
   overflow-y: unset;
+}
+
+.monthly-details {
+  width: 70vw;
+  margin: auto;
+}
+
+.monthly-details__month-block {
+  display: flex;
+  flex: 0 0 200px;
+}
+
+.montly-details__title__small {
+  font-size: 0.5em;
+}
+
+.green {
+  color: green;
+}
+
+.red {
+  color: red;
+}
+
+.orange {
+  color: orange;
 }

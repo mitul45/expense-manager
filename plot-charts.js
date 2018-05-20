@@ -1,19 +1,7 @@
 (function() {
-  const months = [
-    'Jan',
-    'Feb',
-    'Mar',
-    'Apr',
-    'May',
-    'Jun',
-    'Jul',
-    'Aug',
-    'Sep',
-    'Oct',
-    'Nov',
-    'Dec'
-  ]
+  const utils = window.expenseManager.utils;
   let monthlyBarChart;
+  let showIncome = true;
 
   function getMonthlyExpense(expenses, category) {
     const today = new Date();
@@ -23,7 +11,6 @@
       income: [],
     };
     const indexDate = new Date();
-    indexDate.setMonth(today.getMonth() - 11);
 
     for (let i = 0; i < 12; i++) {
       let monthlyExpense = 0;
@@ -55,12 +42,12 @@
       })
 
       if (monthlyExpense || montlyIncome) {
-        data.labels.push(`${months[indexMonth]} ${indexYear}`);
+        data.labels.push(`${utils.months[indexMonth]} ${indexYear}`);
         data.expense.push(monthlyExpense.toFixed(2));
         data.income.push(montlyIncome.toFixed(2));
       }
 
-      indexDate.setMonth(indexDate.getMonth() + 1);
+      indexDate.setMonth(indexDate.getMonth() - 1);
     }
 
     return data;
@@ -68,13 +55,25 @@
 
   function updateData(chart, data) {
     chart.data.labels = data.labels;
-    chart.data.datasets[0].data = data.expense;
-    chart.data.datasets[1].data = data.income;
+    chart.data.datasets = [{
+      data: data.expense,
+      label: "Expense",
+      backgroundColor: "#ED5E59",
+      borderWidth: 1
+    }];
+    if (showIncome) {
+      chart.data.datasets.push({
+        data: data.income,
+        label: "Income",
+        backgroundColor: "#67AB5B",
+        borderWidth: 1
+      })
+    }
     chart.update();
   }
 
   function ployMontlyExpenseChart(allExpenses, category) {
-    const ctx = document.querySelector(".details__overall canvas").getContext('2d');
+    const ctx = document.querySelector(".details__overall canvas");
     const data = getMonthlyExpense(allExpenses, category);
     if (monthlyBarChart) {
       updateData(monthlyBarChart, data);
@@ -100,7 +99,8 @@
         options: {
           legend: {
             display: false,
-          }
+          },
+          barThickness: 5
         }
       });
     }
@@ -115,8 +115,13 @@
     })
 
     el.addEventListener("change", () => {
-      ployMontlyExpenseChart(allExpenses, el.value)
+      ployMontlyExpenseChart(allExpenses, el.value);
     });
+
+    document.querySelector(".details__category--toggle-income").addEventListener('click', () => {
+      showIncome = !showIncome;
+      ployMontlyExpenseChart(allExpenses, el.value);
+    })
   }
 
   function init(categories, allExpenses) {

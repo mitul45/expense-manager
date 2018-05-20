@@ -26,7 +26,11 @@
   }
 
   function init(sheetID) {
-    return getAllExpenses(sheetID).then(formatDate);
+    return getAllExpenses(sheetID).then(formatDate).then(allExpenses => {
+      return allExpenses.sort((a, b) => {
+        return b[0] - a[0];
+      })
+    })
   }
 
   window.expenseManager.retrieveData = {

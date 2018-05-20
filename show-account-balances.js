@@ -1,6 +1,6 @@
 (function() {
 
-  function init(accounts) {
+  function showAccountBalances(accounts) {
     const accountsTableBody = document.querySelector(".summary__balances tbody");
     accountsTableBody.innerHTML = "";
 
@@ -14,7 +14,11 @@
     })
   }
 
-  window.expenseManager.showAccountBalances = {
+  function init(accounts, categories, allExpenses) {
+    showAccountBalances(accounts);
+  }
+
+   window.expenseManager.showAccountBalances = {
     init
   }
 })();
