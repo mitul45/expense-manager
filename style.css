@@ -15,8 +15,8 @@ body {
 
 .summary__balances th,
 .summary__balances td,
-.monthly-details__tables td,
-.monthly-details__tables th {
+.monthly-details__table td,
+.monthly-details__table th {
   border-right: 1px solid rgba(0,0,0,.12);
 }
 
@@ -117,15 +117,19 @@ body {
   margin-bottom: 2em;
 }
 
+.monthly-details__title {
+  display: inline-block;
+}
+
 .monthly-details__charts div {
   width: 50%;
 }
 
-.monthly-details__tables th {
-  text-align: center;
+.monthly-details__table table {
+  flex-grow: 1;
 }
 
-.monthly-details__tables {
+.monthly-details__table {
   display: flex;
   justify-content: space-between;
 }

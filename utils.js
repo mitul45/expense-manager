@@ -135,6 +135,10 @@
     return date;
   }
 
+  function sortBy (key, a, b) {
+    return b[key] - a[key];
+  }
+
   const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
   window.expenseManager = window.expenseManager || {};
@@ -150,5 +154,6 @@
     createTR,
     convertLotusDayToJSDate,
     months,
+    sortBy,
   };
 })();

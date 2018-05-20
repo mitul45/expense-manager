@@ -25,6 +25,7 @@
         monthlyData[key].transfers.push({
           date,
           category,
+          account,
           transferAmount: expenseAmount,
           title,
         });
@@ -48,6 +49,7 @@
         monthlyData[key].incomes.push({
           date,
           category,
+          account,
           incomeAmount,
           title,
         });
@@ -113,12 +115,12 @@
         if (chartType === 'categories') {
           rows = expenses
             .filter(expense => expense.category === title)
-            .sort((a, b) => b.expenseAmount - a.expenseAmount)
+            .sort(utils.sortBy.bind(null, 'expenseAmount'))
             .slice(0, 7);
         } else if (chartType === 'accounts') {
           rows = expenses
             .filter(expense => expense.account === title)
-            .sort((a, b) => b.expenseAmount - a.expenseAmount)
+            .sort(utils.sortBy.bind(null, 'expenseAmount'))
             .slice(0, 7);
         }
 
@@ -209,20 +211,18 @@
     for (let i = 0; i < 12; i++) {
       const data = monthlyData[`${indexDate.getMonth()} - ${indexDate.getFullYear()}`];
       if (data) {
-        const topExpenses = data.expenses.sort((a, b) => b.expenseAmount - a.expenseAmount).slice(0, 10);
-        const incomes = data.incomes.sort((a, b) => b.incomeAmount - a.incomeAmount).slice(0, 10);
-        const transfers = data.transfers.sort((a, b) => b.expenseAmount - a.expenseAmount).slice(0, 10);
-
         monthlyDetailsEl.innerHTML += `
-          <div>
-            <h3 class="monthly-details__title">
-              ${utils.months[indexDate.getMonth()]} – ${indexDate.getFullYear()}
-              <span class="montly-details__title__small">
-                (<span class="green"> + ${data.incomeAmount.toFixed(2)}</span>, 
-                 <span class="red">– ${data.expenseAmount.toFixed(2)}</span>, 
-                 <span class="orange">&plusmn; ${data.transferAmount.toFixed(2)}</span> )
-              </span>
-            </h3>
+          <details>
+            <summary>
+              <h3 class="monthly-details__title">
+                ${utils.months[indexDate.getMonth()]} – ${indexDate.getFullYear()}
+                <span class="montly-details__title__small">
+                  (<span class="green"> + ${data.incomeAmount.toFixed(2)}</span>, 
+                   <span class="red">– ${data.expenseAmount.toFixed(2)}</span>, 
+                   <span class="orange">&plusmn; ${data.transferAmount.toFixed(2)}</span> )
+                </span>
+              </h3>
+            </summary>
             <div class="monthly-details__charts">
               <div class="montly-details__charts__category">
                   <canvas id="categories-${indexDate.getMonth()}-${indexDate.getFullYear()}"></canvas>
@@ -232,67 +232,47 @@
               </div>
             </div>
             </div>
-            <div class="monthly-details__tables">
-              <table class="mdl-data-table" id="expenses-${indexDate.getMonth()}-${indexDate.getFullYear()}">
-                <thead><tr><th colspan="2">
-                  Top expenses
-                </th></tr></thead>
-              </table>
-              <table class="mdl-data-table" id="incomes-${indexDate.getMonth()}-${indexDate.getFullYear()}">
-                <thead><tr><th colspan="2">
-                  Incomes
-                </th></tr></thead>
-              </table>
-              <table class="mdl-data-table" id="transfers-${indexDate.getMonth()}-${indexDate.getFullYear()}">
-                <thead><tr><th colspan="2">
-                  Transfers
-                </th></tr></thead>
+
+            <div class="monthly-details__table">
+              <table class="mdl-data-table" id="transactions-${indexDate.getMonth()}-${indexDate.getFullYear()}">
               </table>
             </div>
-          </div>
+          </details>
           `;
 
-        const expenseTable = document.getElementById(`expenses-${indexDate.getMonth()}-${indexDate.getFullYear()}`);
-        const incomeTable = document.getElementById(`incomes-${indexDate.getMonth()}-${indexDate.getFullYear()}`);
-        const transferTable = document.getElementById(`transfers-${indexDate.getMonth()}-${indexDate.getFullYear()}`);
+        const transactionTable = document.getElementById(
+          `transactions-${indexDate.getMonth()}-${indexDate.getFullYear()}`,
+        );
+        const transactions = [
+          ...data.incomes.sort(utils.sortBy.bind(null, 'incomeAmount')),
+          ...data.transfers.sort(utils.sortBy.bind(null, 'transferAmount')),
+          ...data.expenses.sort(utils.sortBy.bind(null, 'expenseAmount')),
+        ];
 
-        topExpenses.map(expense => {
-          expenseTable.appendChild(
+        transactions.forEach(transaction => {
+          transactionTable.appendChild(
             utils.createTR([
               {
-                value: expense.title,
+                value: `${transaction.date.getDay()}/${transaction.date.getMonth()+1}/${transaction.date.getFullYear()}`,
                 className: 'mdl-data-table__cell--non-numeric',
               },
               {
-                value: expense.expenseAmount,
-              },
-            ]),
-          );
-        });
-
-        incomes.map(income => {
-          incomeTable.appendChild(
-            utils.createTR([
-              {
-                value: income.title,
+                value: transaction.title ? transaction.title : '–',
                 className: 'mdl-data-table__cell--non-numeric',
               },
               {
-                value: income.incomeAmount,
-              },
-            ]),
-          );
-        });
-
-        transfers.map(transfer => {
-          transferTable.appendChild(
-            utils.createTR([
-              {
-                value: transfer.title,
+                value: transaction.category,
                 className: 'mdl-data-table__cell--non-numeric',
               },
               {
-                value: transfer.transferAmount,
+                value: transaction.account,
+                className: 'mdl-data-table__cell--non-numeric',
+              },
+              {
+                value: transaction.expenseAmount
+                  ? transaction.expenseAmount
+                  : transaction.incomeAmount ? transaction.incomeAmount : transaction.transferAmount,
+                className: transaction.expenseAmount ? 'red' : transaction.incomeAmount ? 'green' : 'orange',
               },
             ]),
           );
