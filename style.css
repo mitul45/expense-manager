@@ -141,3 +141,14 @@ body {
 .orange {
   color: orange;
 }
+
+#chartjs-tooltip {
+  z-index: 1;
+  background: #424242;
+  color: white;
+  border-radius: 4px;
+}
+
+#chartjs-tooltip th {
+  border-bottom: solid 1px white;
+}

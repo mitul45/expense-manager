@@ -36,6 +36,7 @@
           category,
           expenseAmount,
           title,
+          account,
         });
 
         monthlyData[key].chartData.byCategory[category] = monthlyData[key].chartData.byCategory[category] || 0;
@@ -73,6 +74,76 @@
 
   function plotPieChart(data, month, year) {
     const chartData = getChartJSData(data, month, year);
+    function customTooltip(tooltipModel, chartType, expenses) {
+      // Tooltip Element
+      var tooltipEl = document.getElementById('chartjs-tooltip');
+
+      // Create element on first render
+      if (!tooltipEl) {
+        tooltipEl = document.createElement('div');
+        tooltipEl.id = 'chartjs-tooltip';
+        tooltipEl.innerHTML = '<table></table>';
+        document.body.appendChild(tooltipEl);
+      }
+
+      // Hide if no tooltip
+      if (tooltipModel.opacity === 0) {
+        tooltipEl.style.opacity = 0;
+        tooltipEl.style.zIndex = 0;
+        return;
+      }
+
+      // Set caret Position
+      tooltipEl.classList.remove('above', 'below', 'no-transform');
+      if (tooltipModel.yAlign) {
+        tooltipEl.classList.add(tooltipModel.yAlign);
+      } else {
+        tooltipEl.classList.add('no-transform');
+      }
+
+      // Set Text
+      if (tooltipModel.body) {
+        const title = tooltipModel.body[0].lines[0].split(':')[0];
+        const amount = tooltipModel.body[0].lines[0].split(': ')[1];
+        let rows = [];
+        let innerHtml = `<thead>`;
+        innerHtml += `<tr><th> ${title} </th><th>${amount}</th></tr>`;
+        innerHtml += `</thead><tbody>`;
+
+        if (chartType === 'categories') {
+          rows = expenses
+            .filter(expense => expense.category === title)
+            .sort((a, b) => b.expenseAmount - a.expenseAmount)
+            .slice(0, 7);
+        } else if (chartType === 'accounts') {
+          rows = expenses
+            .filter(expense => expense.account === title)
+            .sort((a, b) => b.expenseAmount - a.expenseAmount)
+            .slice(0, 7);
+        }
+
+        innerHtml += rows.map(row => `<tr><td>${row.title}</td><td>${row.expenseAmount}</td></tr>`).join('');
+
+        innerHtml += '</tbody>';
+
+        var tableRoot = tooltipEl.querySelector('table');
+        tableRoot.innerHTML = innerHtml;
+      }
+
+      // `this` will be the overall tooltip
+      var position = this._chart.canvas.getBoundingClientRect();
+
+      // Display, position, and set styles for font
+      tooltipEl.style.opacity = 1;
+      tooltipEl.style.zIndex = 1;
+      tooltipEl.style.position = 'absolute';
+      tooltipEl.style.left = position.left + tooltipModel.caretX + 'px';
+      tooltipEl.style.top = position.top + tooltipModel.caretY + 'px';
+      tooltipEl.style.fontFamily = tooltipModel._bodyFontFamily;
+      tooltipEl.style.fontSize = tooltipModel.bodyFontSize + 'px';
+      tooltipEl.style.fontStyle = tooltipModel._bodyFontStyle;
+      tooltipEl.style.padding = tooltipModel.yPadding + 'px ' + tooltipModel.xPadding + 'px';
+    }
     new Chart(document.getElementById(`categories-${month}-${year}`).getContext('2d'), {
       type: 'doughnut',
       options: {
@@ -82,7 +153,12 @@
         },
         legend: {
           display: false,
-          position: 'bottom',
+        },
+        tooltips: {
+          enabled: false,
+          custom: function(tooltipModel) {
+            customTooltip.apply(this, [tooltipModel, 'categories', data.expenses]);
+          },
         },
       },
       data: {
@@ -105,7 +181,12 @@
         },
         legend: {
           display: false,
-          position: 'bottom',
+        },
+        tooltips: {
+          enabled: false,
+          custom: function(tooltipModel) {
+            customTooltip.apply(this, [tooltipModel, 'accounts', data.expenses]);
+          },
         },
       },
       data: {
