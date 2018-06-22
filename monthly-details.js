@@ -156,7 +156,7 @@
           text: 'By category',
         },
         legend: {
-          display: true,
+          display: utils.isMobileDevice() ? false: true,
           position: 'right',
         },
         tooltips: {
@@ -186,7 +186,7 @@
           text: 'By account',
         },
         legend: {
-          display: true,
+          display: utils.isMobileDevice() ? false: true,
           position: 'right',
         },
         tooltips: {
@@ -218,29 +218,30 @@
       const data = monthlyData[`${indexDate.getMonth()} - ${indexDate.getFullYear()}`];
       if (data) {
         monthlyDetailsEl.innerHTML += `
+            <h4 class="monthly-details__title">
+              ${utils.months[indexDate.getMonth()]} – ${indexDate.getFullYear()}
+              <span class="montly-details__title__small">
+                (<span class="green"> + ${data.incomeAmount.toFixed(2)}</span>, 
+                 <span class="red">– ${data.expenseAmount.toFixed(2)}</span>, 
+                 <span class="orange">&plusmn; ${data.transferAmount.toFixed(2)}</span> )
+              </span>
+            </h4>
+          <div class="monthly-details__charts">
+            <div class="montly-details__charts__category">
+                <canvas id="categories-${indexDate.getMonth()}-${indexDate.getFullYear()}"></canvas>
+            </div>
+            <div class="montly-details__charts__account">
+                <canvas id="accounts-${indexDate.getMonth()}-${indexDate.getFullYear()}"></canvas>
+            </div>
+          </div>
+          </div>
+
           <details>
             <summary>
-              <h3 class="monthly-details__title">
-                ${utils.months[indexDate.getMonth()]} – ${indexDate.getFullYear()}
-                <span class="montly-details__title__small">
-                  (<span class="green"> + ${data.incomeAmount.toFixed(2)}</span>, 
-                   <span class="red">– ${data.expenseAmount.toFixed(2)}</span>, 
-                   <span class="orange">&plusmn; ${data.transferAmount.toFixed(2)}</span> )
-                </span>
-              </h3>
+              All Expenses
             </summary>
-            <div class="monthly-details__charts">
-              <div class="montly-details__charts__category">
-                  <canvas id="categories-${indexDate.getMonth()}-${indexDate.getFullYear()}"></canvas>
-              </div>
-              <div class="montly-details__charts__account">
-                  <canvas id="accounts-${indexDate.getMonth()}-${indexDate.getFullYear()}"></canvas>
-              </div>
-            </div>
-            </div>
-
             <div class="monthly-details__table">
-              <table class="mdl-data-table" id="transactions-${indexDate.getMonth()}-${indexDate.getFullYear()}">
+              <table class="mdl-data-table monthly-expense-table" id="transactions-${indexDate.getMonth()}-${indexDate.getFullYear()}">
               </table>
             </div>
           </details>
@@ -256,7 +257,19 @@
         ];
 
         transactions.forEach(transaction => {
-          transactionTable.appendChild(
+          const row = utils.isMobileDevice() ?
+            utils.createTR([
+              {
+                value: transaction.title ? transaction.title : '–',
+                className: 'mdl-data-table__cell--non-numeric',
+              },
+              {
+                value: transaction.expenseAmount
+                  ? transaction.expenseAmount
+                  : transaction.incomeAmount ? transaction.incomeAmount : transaction.transferAmount,
+                className: transaction.expenseAmount ? 'red' : transaction.incomeAmount ? 'green' : 'orange',
+              },
+            ]) :
             utils.createTR([
               {
                 value: `${transaction.date.getDay()}/${transaction.date.getMonth()+1}/${transaction.date.getFullYear()}`,
@@ -280,8 +293,8 @@
                   : transaction.incomeAmount ? transaction.incomeAmount : transaction.transferAmount,
                 className: transaction.expenseAmount ? 'red' : transaction.incomeAmount ? 'green' : 'orange',
               },
-            ]),
-          );
+            ]);
+            transactionTable.appendChild(row);
         });
         setTimeout(plotPieChart.bind(null, data, indexDate.getMonth(), indexDate.getFullYear()));
       }

@@ -5,12 +5,23 @@ body {
 .summary {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-around;
+  justify-content: center;
+}
+
+.summary,
+.details,
+.monthly-details {
+  width: 90vw;
+  margin: auto;
+}
+
+.details__overall {
+  width: 100%;
 }
 
 .summary__forms,
 .summary__balances {
-  margin: 2em 0;
+  margin: 2em;
 }
 
 .summary__balances th,
@@ -21,8 +32,13 @@ body {
 }
 
 .summary__balances td:last-child,
-.monthly-details__tables td:last-child {
+.monthly-expense-table td:last-child {
   font-family: monospace;
+}
+
+.summary__balances td:first-child,
+.monthly-expense-table td:first-child {
+  white-space: normal;
 }
 
 #expense-form, #transfer-form {
@@ -67,10 +83,6 @@ body {
   align-items: center;
 }
 
-.details__overall {
-  width: 90vw;
-}
-
 .footer {
   padding: 10px;
   background: #424242;
@@ -103,17 +115,13 @@ body {
   overflow-y: unset;
 }
 
-.monthly-details {
-  width: 70vw;
-  margin: auto;
-}
-
 .montly-details__title__small {
   font-size: 0.5em;
 }
 
 .monthly-details__charts {
   display: flex;
+  flex-wrap: wrap;
   margin-bottom: 2em;
 }
 
@@ -122,7 +130,7 @@ body {
 }
 
 .monthly-details__charts div {
-  width: 50%;
+  flex-grow: 1;
 }
 
 .monthly-details__table table {

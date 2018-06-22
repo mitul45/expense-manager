@@ -42,7 +42,10 @@
       });
 
       if (monthlyExpense || montlyIncome) {
-        data.labels.push(`${utils.months[indexMonth]} ${indexYear}`);
+        const label = utils.isMobileDevice()
+          ? `${indexMonth + 1}/${indexYear % 100}`
+          : `${utils.months[indexMonth]} - ${indexYear}`
+        data.labels.push(label);
         data.expense.push(monthlyExpense.toFixed(2));
         data.income.push(montlyIncome.toFixed(2));
       }
