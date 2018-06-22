@@ -28,7 +28,7 @@
           const expenseYear = expenseDate.getFullYear();
 
           if (expenseMonth === indexMonth && expenseYear === indexYear) {
-            if (category && category !== "All") {
+            if (category && category !== 'All') {
               if (expenseCategory === category) {
                 monthlyExpense += expenseAmount;
                 montlyIncome += incomeAmount;
@@ -39,7 +39,7 @@
             }
           }
         }
-      })
+      });
 
       if (monthlyExpense || montlyIncome) {
         data.labels.push(`${utils.months[indexMonth]} ${indexYear}`);
@@ -55,25 +55,27 @@
 
   function updateData(chart, data) {
     chart.data.labels = data.labels;
-    chart.data.datasets = [{
-      data: data.expense,
-      label: "Expense",
-      backgroundColor: "#ED5E59",
-      borderWidth: 1
-    }];
+    chart.data.datasets = [
+      {
+        data: data.expense,
+        label: 'Expense',
+        backgroundColor: '#ED5E59',
+        borderWidth: 1,
+      },
+    ];
     if (showIncome) {
       chart.data.datasets.push({
         data: data.income,
-        label: "Income",
-        backgroundColor: "#67AB5B",
-        borderWidth: 1
-      })
+        label: 'Income',
+        backgroundColor: '#67AB5B',
+        borderWidth: 1,
+      });
     }
     chart.update();
   }
 
   function ployMontlyExpenseChart(allExpenses, category) {
-    const ctx = document.querySelector(".details__overall canvas");
+    const ctx = document.querySelector('.details__overall canvas');
     const data = getMonthlyExpense(allExpenses, category);
     if (monthlyBarChart) {
       updateData(monthlyBarChart, data);
@@ -83,45 +85,46 @@
         data: {
           labels: data.labels,
           datasets: [
-          {
-            data: data.expense,
-            label: "Expense",
-            backgroundColor: "#ED5E59",
-            borderWidth: 1
-          },
-          {
-            data: data.income,
-            label: "Income",
-            backgroundColor: "#67AB5B",
-            borderWidth: 1
-          }]
+            {
+              data: data.expense,
+              label: 'Expense',
+              backgroundColor: '#ED5E59',
+              borderWidth: 1,
+            },
+            {
+              data: data.income,
+              label: 'Income',
+              backgroundColor: '#67AB5B',
+              borderWidth: 1,
+            },
+          ],
         },
         options: {
           legend: {
             display: false,
           },
-          barThickness: 5
-        }
+          barThickness: 5,
+        },
       });
     }
   }
 
   function setupSelect(categories, allExpenses) {
-    const el = window.document.querySelector(".details__category__select");
+    const el = window.document.querySelector('.details__category__select');
     const option = window.expenseManager.utils.wrapInOption;
-    el.appendChild(option("All"));
+    el.appendChild(option('All'));
     categories.sort().forEach(category => {
       el.appendChild(option(category));
-    })
+    });
 
-    el.addEventListener("change", () => {
+    el.addEventListener('change', () => {
       ployMontlyExpenseChart(allExpenses, el.value);
     });
 
-    document.querySelector(".details__category--toggle-income").addEventListener('click', () => {
+    document.querySelector('.details__category--toggle-income').addEventListener('click', () => {
       showIncome = !showIncome;
       ployMontlyExpenseChart(allExpenses, el.value);
-    })
+    });
   }
 
   function init(categories, allExpenses) {
@@ -130,6 +133,6 @@
   }
 
   window.expenseManager.plotCharts = {
-    init
-  }
+    init,
+  };
 })();

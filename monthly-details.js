@@ -2,6 +2,8 @@
   const monthlyDetailsEl = document.querySelector('.monthly-details');
   const chartCtx = {};
   const utils = window.expenseManager.utils;
+  const COLORS = ['#8dd3c7','#ffffb3','#bebada','#fb8072','#80b1d3','#fdb462','#b3de69','#fccde5','#d9d9d9','#bc80bd','#ccebc5','#ffed6f'];
+
 
   function formatExpensesByMonth(allExpenses) {
     const monthlyData = {};
@@ -154,7 +156,8 @@
           text: 'By category',
         },
         legend: {
-          display: false,
+          display: true,
+          position: 'right',
         },
         tooltips: {
           enabled: false,
@@ -167,8 +170,9 @@
         datasets: [
           {
             data: chartData.categoryTotal,
-            backgroundColor: '#ED5E59',
-            borderWidth: 1,
+            backgroundColor: COLORS,
+            borderWidth: 0.5,
+            borderColor: '#333333',
           },
         ],
         labels: chartData.categories,
@@ -182,7 +186,8 @@
           text: 'By account',
         },
         legend: {
-          display: false,
+          display: true,
+          position: 'right',
         },
         tooltips: {
           enabled: false,
@@ -195,8 +200,9 @@
         datasets: [
           {
             data: chartData.accountTotal,
-            backgroundColor: '#ED5E59',
-            borderWidth: 1,
+            backgroundColor: COLORS,
+            borderWidth: 0.5,
+            borderColor: '#333333',
           },
         ],
         labels: chartData.accounts,
