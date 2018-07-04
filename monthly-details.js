@@ -272,7 +272,7 @@
             ]) :
             utils.createTR([
               {
-                value: `${transaction.date.getDay()}/${transaction.date.getMonth()+1}/${transaction.date.getFullYear()}`,
+                value: `${transaction.date.getDate()}/${transaction.date.getMonth()+1}/${transaction.date.getFullYear()}`,
                 className: 'mdl-data-table__cell--non-numeric',
               },
               {
