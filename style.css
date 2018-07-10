@@ -133,10 +133,6 @@ body {
   flex-grow: 1;
 }
 
-.monthly-details__table table {
-  flex-grow: 1;
-}
-
 .monthly-details__table {
   display: flex;
   justify-content: space-between;

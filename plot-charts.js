@@ -11,6 +11,7 @@
       income: [],
     };
     const indexDate = new Date();
+    indexDate.setMonth(indexDate.getMonth() - 11);
 
     for (let i = 0; i < 12; i++) {
       let monthlyExpense = 0;
@@ -44,13 +45,13 @@
       if (monthlyExpense || montlyIncome) {
         const label = utils.isMobileDevice()
           ? `${indexMonth + 1}/${indexYear % 100}`
-          : `${utils.months[indexMonth]} - ${indexYear}`
+          : `${utils.months[indexMonth]} - ${indexYear}`;
         data.labels.push(label);
         data.expense.push(monthlyExpense.toFixed(2));
         data.income.push(montlyIncome.toFixed(2));
       }
 
-      indexDate.setMonth(indexDate.getMonth() - 1);
+      indexDate.setMonth(indexDate.getMonth() + 1);
     }
 
     return data;
@@ -84,7 +85,7 @@
       updateData(monthlyBarChart, data);
     } else {
       monthlyBarChart = new Chart(ctx, {
-        type: 'horizontalBar',
+        type: 'bar',
         data: {
           labels: data.labels,
           datasets: [
@@ -107,6 +108,18 @@
             display: false,
           },
           barThickness: 5,
+          scales: {
+            xAxes: [
+              {
+                stacked: true,
+              },
+            ],
+            yAxes: [
+              {
+                stacked: true,
+              },
+            ],
+          },
         },
       });
     }
