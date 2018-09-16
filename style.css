@@ -41,6 +41,10 @@ body {
   white-space: normal;
 }
 
+.monthly-expense-table {
+  margin-top: 1em;
+}
+
 #expense-form, #transfer-form {
   display: flex;
   flex-direction: column;
@@ -130,7 +134,7 @@ body {
 }
 
 .monthly-details__charts div {
-  flex-grow: 1;
+  width: 50%;
 }
 
 .monthly-details__table {

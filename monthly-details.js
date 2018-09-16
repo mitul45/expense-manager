@@ -63,8 +63,8 @@
   }
 
   function getChartJSData(data, month, year) {
-    const categories = Object.keys(data.chartData.byCategory).sort();
-    const accounts = Object.keys(data.chartData.byAccount).sort();
+    const categories = Object.keys(data.chartData.byCategory);
+    const accounts = Object.keys(data.chartData.byAccount);
     const chartJSData = {
       categoryTotal: [],
       accountTotal: [],

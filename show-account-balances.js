@@ -4,7 +4,7 @@
     const accountsTableBody = document.querySelector(".summary__balances tbody");
     accountsTableBody.innerHTML = "";
 
-    Object.keys(accounts).sort().forEach(account => {
+    Object.keys(accounts).forEach(account => {
       accountsTableBody.appendChild(
         window.expenseManager.utils.createTR([
           { value: account, className: "mdl-data-table__cell--non-numeric" },

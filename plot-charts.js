@@ -129,7 +129,7 @@
     const el = window.document.querySelector('.details__category__select');
     const option = window.expenseManager.utils.wrapInOption;
     el.appendChild(option('All'));
-    categories.sort().forEach(category => {
+    categories.forEach(category => {
       el.appendChild(option(category));
     });
 
