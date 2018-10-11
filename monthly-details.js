@@ -2,8 +2,6 @@
   const monthlyDetailsEl = document.querySelector('.monthly-details');
   const chartCtx = {};
   const utils = window.expenseManager.utils;
-  const COLORS = ['#8dd3c7','#ffffb3','#bebada','#fb8072','#80b1d3','#fdb462','#b3de69','#fccde5','#d9d9d9','#bc80bd','#ccebc5','#ffed6f'];
-
 
   function formatExpensesByMonth(allExpenses) {
     const monthlyData = {};
@@ -62,7 +60,7 @@
     return monthlyData;
   }
 
-  function getChartJSData(data, month, year) {
+  function getChartJSData(data) {
     const categories = Object.keys(data.chartData.byCategory);
     const accounts = Object.keys(data.chartData.byAccount);
     const chartJSData = {
@@ -77,7 +75,7 @@
   }
 
   function plotPieChart(data, month, year) {
-    const chartData = getChartJSData(data, month, year);
+    const chartData = getChartJSData(data);
     function customTooltip(tooltipModel, chartType, expenses) {
       // Tooltip Element
       var tooltipEl = document.getElementById('chartjs-tooltip');
@@ -170,7 +168,7 @@
         datasets: [
           {
             data: chartData.categoryTotal,
-            backgroundColor: COLORS,
+            backgroundColor: utils.getColorsForCategories(chartData.categories),
             borderWidth: 0.5,
             borderColor: '#333333',
           },
@@ -200,7 +198,7 @@
         datasets: [
           {
             data: chartData.accountTotal,
-            backgroundColor: COLORS,
+            backgroundColor: utils.getColorsForAccounts(chartData.accounts),
             borderWidth: 0.5,
             borderColor: '#333333',
           },

@@ -165,6 +165,8 @@
     );
     window.expenseManager.transferForm.init(data.sheetID, Object.keys(data.accounts));
     window.expenseManager.showAccountBalances.init(data.accounts);
+    utils.setColorsForEachCategory(data.categories);
+    utils.setColorsForEachAccount(Object.keys(data.accounts));
     window.expenseManager.retrieveData.init(data.sheetID).then((allExpenses) => {
       window.expenseManager.plotCharts.init(data.categories, allExpenses);
       window.expenseManager.monthlyDetails.init(allExpenses);

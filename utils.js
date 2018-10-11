@@ -156,9 +156,81 @@
         check = true;
     })(navigator.userAgent || navigator.vendor || window.opera);
     return check;
-  };
+  }
 
-  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  const months = [
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'May',
+    'Jun',
+    'Jul',
+    'Aug',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dec',
+  ];
+  const COLORS = [
+    '#f1a9a0',
+    '#6c7a89',
+    '#ec644b',
+    '#f1e7fe',
+    '#d2527f',
+    '#f22613',
+    '#aea8d3',
+    '#cf000f',
+    '#96281b',
+    '#736598',
+    '#8c14fc',
+    '#81cfe0',
+    '#a537fd',
+    '#4d05e8',
+    '#913d88',
+    '#336e7b',
+    '#34495e',
+    '#19b5fe',
+    '#2574a9',
+    '#c8f7c5',
+    '#7befb2',
+    '#2ecc71',
+    '#29f1c3',
+    '#1e824c',
+    '#91b496',
+    '#ffffcc',
+    '#f4f776',
+    '#f0ff00',
+    '#fcb941',
+    '#e47833',
+    '#d35400',
+    '#bdc3c7',
+    '#95a5a6',
+    '#67809f',
+    '#2e3131',
+  ];
+  let categoryColor = {};
+  let accountColor = {};
+
+  function setColorsForEachCategory(categories) {
+    categories.forEach((category, index) => {
+      categoryColor[category] = COLORS[index];
+    });
+  }
+
+  function setColorsForEachAccount(accounts) {
+    accounts.forEach((account, index) => {
+      accountColor[account] = COLORS[index];
+    });
+  }
+
+  function getColorsForCategories(categories) {
+    return categories.map(category => categoryColor[category]);
+  }
+
+  function getColorsForAccounts(accounts) {
+    return accounts.map(account => accountColor[account]);
+  }
 
   window.expenseManager = window.expenseManager || {};
   window.expenseManager.utils = window.expenseManager.utils || {
@@ -175,5 +247,9 @@
     months,
     sortBy,
     isMobileDevice,
+    setColorsForEachCategory,
+    setColorsForEachAccount,
+    getColorsForCategories,
+    getColorsForAccounts,
   };
 })();
