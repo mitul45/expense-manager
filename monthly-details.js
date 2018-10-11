@@ -40,8 +40,10 @@
           account,
         });
 
-        monthlyData[key].chartData.byCategory[category] = monthlyData[key].chartData.byCategory[category] || 0;
-        monthlyData[key].chartData.byAccount[account] = monthlyData[key].chartData.byAccount[account] || 0;
+        monthlyData[key].chartData.byCategory[category] =
+          monthlyData[key].chartData.byCategory[category] || 0;
+        monthlyData[key].chartData.byAccount[account] =
+          monthlyData[key].chartData.byAccount[account] || 0;
         monthlyData[key].chartData.byCategory[category] += expenseAmount;
         monthlyData[key].chartData.byAccount[account] += expenseAmount;
         monthlyData[key].expenseAmount += expenseAmount;
@@ -69,8 +71,12 @@
       categories,
       accounts,
     };
-    categories.forEach(category => chartJSData.categoryTotal.push(data.chartData.byCategory[category].toFixed(2)));
-    accounts.forEach(account => chartJSData.accountTotal.push(data.chartData.byAccount[account].toFixed(2)));
+    categories.forEach(category =>
+      chartJSData.categoryTotal.push(data.chartData.byCategory[category].toFixed(2)),
+    );
+    accounts.forEach(account =>
+      chartJSData.accountTotal.push(data.chartData.byAccount[account].toFixed(2)),
+    );
     return chartJSData;
   }
 
@@ -124,7 +130,9 @@
             .slice(0, 7);
         }
 
-        innerHtml += rows.map(row => `<tr><td>${row.title}</td><td>${row.expenseAmount}</td></tr>`).join('');
+        innerHtml += rows
+          .map(row => `<tr><td>${row.title}</td><td>${row.expenseAmount}</td></tr>`)
+          .join('');
 
         innerHtml += '</tbody>';
 
@@ -154,7 +162,7 @@
           text: 'By category',
         },
         legend: {
-          display: utils.isMobileDevice() ? false: true,
+          display: utils.isMobileDevice() ? false : true,
           position: 'right',
         },
         tooltips: {
@@ -184,7 +192,7 @@
           text: 'By account',
         },
         legend: {
-          display: utils.isMobileDevice() ? false: true,
+          display: utils.isMobileDevice() ? false : true,
           position: 'right',
         },
         tooltips: {
@@ -255,44 +263,53 @@
         ];
 
         transactions.forEach(transaction => {
-          const row = utils.isMobileDevice() ?
-            utils.createTR([
-              {
-                value: transaction.title ? transaction.title : '–',
-                className: 'mdl-data-table__cell--non-numeric',
-              },
-              {
-                value: transaction.expenseAmount
-                  ? transaction.expenseAmount
-                  : transaction.incomeAmount ? transaction.incomeAmount : transaction.transferAmount,
-                className: transaction.expenseAmount ? 'red' : transaction.incomeAmount ? 'green' : 'orange',
-              },
-            ]) :
-            utils.createTR([
-              {
-                value: `${transaction.date.getDate()}/${transaction.date.getMonth()+1}/${transaction.date.getFullYear()}`,
-                className: 'mdl-data-table__cell--non-numeric',
-              },
-              {
-                value: transaction.title ? transaction.title : '–',
-                className: 'mdl-data-table__cell--non-numeric',
-              },
-              {
-                value: transaction.category,
-                className: 'mdl-data-table__cell--non-numeric',
-              },
-              {
-                value: transaction.account,
-                className: 'mdl-data-table__cell--non-numeric',
-              },
-              {
-                value: transaction.expenseAmount
-                  ? transaction.expenseAmount
-                  : transaction.incomeAmount ? transaction.incomeAmount : transaction.transferAmount,
-                className: transaction.expenseAmount ? 'red' : transaction.incomeAmount ? 'green' : 'orange',
-              },
-            ]);
-            transactionTable.appendChild(row);
+          const row = utils.isMobileDevice()
+            ? utils.createTR([
+                {
+                  value: transaction.title ? transaction.title : '–',
+                  className: 'mdl-data-table__cell--non-numeric',
+                },
+                {
+                  value: transaction.expenseAmount
+                    ? transaction.expenseAmount
+                    : transaction.incomeAmount
+                      ? transaction.incomeAmount
+                      : transaction.transferAmount,
+                  className: transaction.expenseAmount
+                    ? 'red'
+                    : transaction.incomeAmount ? 'green' : 'orange',
+                },
+              ])
+            : utils.createTR([
+                {
+                  value: `${transaction.date.getDate()}/${transaction.date.getMonth() +
+                    1}/${transaction.date.getFullYear()}`,
+                  className: 'mdl-data-table__cell--non-numeric',
+                },
+                {
+                  value: transaction.title ? transaction.title : '–',
+                  className: 'mdl-data-table__cell--non-numeric',
+                },
+                {
+                  value: transaction.category,
+                  className: 'mdl-data-table__cell--non-numeric',
+                },
+                {
+                  value: transaction.account,
+                  className: 'mdl-data-table__cell--non-numeric',
+                },
+                {
+                  value: transaction.expenseAmount
+                    ? transaction.expenseAmount
+                    : transaction.incomeAmount
+                      ? transaction.incomeAmount
+                      : transaction.transferAmount,
+                  className: transaction.expenseAmount
+                    ? 'red'
+                    : transaction.incomeAmount ? 'green' : 'orange',
+                },
+              ]);
+          transactionTable.appendChild(row);
         });
         setTimeout(plotPieChart.bind(null, data, indexDate.getMonth(), indexDate.getFullYear()));
       }
