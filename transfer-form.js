@@ -40,18 +40,18 @@
             descriptionVal,
             fromAccountVal,
             'Transfers', // category
-            amountVal, // expense
-            0, // income
-            true, // is internal transfer?
+            amountVal,   // expense amount
+            0,           // income amount
+            true,        // is internal transfer?
           ],
           [
             `=DATE(${dateObj.yyyy}, ${dateObj.mm}, ${dateObj.dd})`,
             descriptionVal,
             toAccountVal,
             'Transfers', // category
-            0, // expense
-            amountVal, // income
-            true, // is internal transfer?
+            0,           // expense amount
+            amountVal,   // income amount
+            true,        // is internal transfer?
           ],
         ]),
       )
@@ -61,7 +61,7 @@
           descriptionEl.value = '';
           amountEl.value = '';
           snackbarContainer.MaterialSnackbar.showSnackbar({
-            message: 'Expense added!',
+            message: 'Transfer noted!',
           });
           utils.hideLoader();
         },
@@ -102,7 +102,7 @@
     document.querySelectorAll('*[data-required]').forEach(e => (e.required = true));
 
     // set lister for `Save` button
-    saveBtn.onclick = save.bind(null);
+    saveBtn.onclick = save;
   }
 
   window.expenseManager.transferForm = {

@@ -1,6 +1,7 @@
 (function() {
-  function showAccountBalances(accounts) {
-    const accountsTableBody = document.querySelector('.summary__balances tbody');
+  const accountsTableBody = document.querySelector('.summary__balances tbody');
+
+  function init(accounts) {
     accountsTableBody.innerHTML = '';
 
     Object.keys(accounts).forEach(account => {
@@ -13,11 +14,7 @@
     });
   }
 
-  function init(accounts, categories, allExpenses) {
-    showAccountBalances(accounts);
-  }
-
-  window.expenseManager.showAccountBalances = {
+  window.expenseManager.accountBalances = {
     init,
   };
 })();

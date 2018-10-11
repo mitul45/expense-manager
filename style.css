@@ -137,6 +137,13 @@ body {
   width: 50%;
 }
 
+@media only screen and (max-device-width: 480px) {
+  .monthly-details__charts div {
+    width: 100%;
+  }
+}
+
+
 .monthly-details__table {
   display: flex;
   justify-content: space-between;

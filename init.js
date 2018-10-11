@@ -9,6 +9,7 @@
   const charts = byID('charts');
   const loader = byID('loader');
   const snackbarContainer = byID('toast-container');
+  const sheetName = 'Expense Sheet';
 
   utils.hideLoader = utils.hideLoader.bind(null, forms, charts, loader);
   utils.showLoader = utils.showLoader.bind(null, forms, charts, loader);
@@ -90,23 +91,9 @@
     utils.showEl(signoutButton);
     utils.showEl(charts);
 
-    getSheetID('Expense Sheet')
+    getSheetID(sheetName)
       .then(getCategoriesAndAccount, sheetNotFound)
       .then(initApp);
-
-    function sheetNotFound() {
-      snackbarContainer.MaterialSnackbar.showSnackbar({
-        message: 'Cannot find the sheet!',
-        actionHandler: () => {
-          window.open(
-            'https://github.com/mitul45/expense-manager/blob/master/README.md#how-to-get-started',
-            '_blank',
-          );
-        },
-        actionText: 'Details',
-        timeout: 5 * 60 * 1000,
-      });
-    }
   }
 
   /**
@@ -152,24 +139,53 @@
     });
   }
 
+  /**
+   * initialize the whole app
+   *
+   * @param {Object} data - contains, sheetID, accounts and categories details
+   */
   function initApp(data) {
     utils.hideLoader();
 
+    // Initialize expense and transfer form
     window.expenseManager.expenseForm.init(
       data.sheetID,
       Object.keys(data.accounts),
       data.categories,
     );
     window.expenseManager.transferForm.init(data.sheetID, Object.keys(data.accounts));
-    window.expenseManager.showAccountBalances.init(data.accounts);
+
+    // Show account balances in a tabular format
+    window.expenseManager.accountBalances.init(data.accounts);
+
+    // Set colors for each category and account
     utils.setColorsForEachCategory(data.categories);
     utils.setColorsForEachAccount(Object.keys(data.accounts));
-    window.expenseManager.retrieveData.init(data.sheetID).then(allExpenses => {
-      window.expenseManager.plotCharts.init(data.categories, allExpenses);
-      window.expenseManager.monthlyDetails.init(allExpenses);
+
+    // Show details for individual months
+    window.expenseManager.getTransactions.init(data.sheetID).then(transactions => {
+      window.expenseManager.yearlyOverview.init(data.categories, transactions);
+      window.expenseManager.monthlyDetails.init(transactions);
     });
 
     utils.appendRequestObj = utils.appendRequestObj.bind(null, data.sheetID);
+  }
+
+  /**
+   * When there is not sheet named 'Expense Sheet' in the user's Google drive, show an error message
+   */
+  function sheetNotFound() {
+    snackbarContainer.MaterialSnackbar.showSnackbar({
+      message: 'Cannot find the expense sheet in your google drive.',
+      actionHandler: () => {
+        window.open(
+          'https://github.com/mitul45/expense-manager/blob/master/README.md#how-to-get-started',
+          '_blank',
+        );
+      },
+      actionText: 'Show steps',
+      timeout: 5 * 60 * 1000,
+    });
   }
 
   window.handleClientLoad = handleClientLoad.bind(null);

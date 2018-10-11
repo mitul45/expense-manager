@@ -1,7 +1,7 @@
 (function() {
   const utils = window.expenseManager.utils;
 
-  function getAllExpenses(sheetID) {
+  function getAllTransactions(sheetID) {
     return new Promise((resolve, reject) => {
       const range = 'Expenses!A2:G';
       gapi.client.sheets.spreadsheets.values
@@ -12,29 +12,30 @@
     });
   }
 
-  function formatDate(allExpenses) {
+  function formatDate(allTransactions) {
     return new Promise(resolve => {
       resolve(
-        allExpenses.map(expense => {
-          const lotusDay = expense[0];
-          expense.shift();
-          return [utils.convertLotusDayToJSDate(lotusDay), ...expense];
+        allTransactions.map(transaction => {
+          const lotusDay = transaction[0];
+          transaction.shift();
+          return [utils.convertLotusDayToJSDate(lotusDay), ...transaction];
         }),
       );
     });
   }
 
   function init(sheetID) {
-    return getAllExpenses(sheetID)
+    return getAllTransactions(sheetID)
       .then(formatDate)
-      .then(allExpenses => {
-        return allExpenses.sort((a, b) => {
+      .then(allTransactions => {
+        // Sort transactions by date
+        return allTransactions.sort((a, b) => {
           return b[0] - a[0];
         });
       });
   }
 
-  window.expenseManager.retrieveData = {
+  window.expenseManager.getTransactions = {
     init,
   };
 })();
